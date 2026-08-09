@@ -1,0 +1,2456 @@
+{
+  "nome": "Brodesco 6 settimane",
+  "dataInizio": "2026-06-22",
+  "settimane": 6,
+  "workout": [
+    {
+      "nome": "Workout A",
+      "esercizi": [
+        {
+          "nome": "Spinte manubri panca 30°",
+          "gruppo": "Petto",
+          "attrezzo": "manubri",
+          "nota": "mantieni il carico del test nelle settimane e segui la progressione",
+          "rest": "2'30\"",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8rm",
+                  "tipo": "test"
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Croci ai cavi alti",
+          "gruppo": "Petto",
+          "attrezzo": "cavi",
+          "nota": "cavi stretti con panca dritta, cavi altezza sterno",
+          "rest": "1'30\"",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Pulley basso",
+          "gruppo": "Schiena",
+          "attrezzo": "macchina",
+          "rest": "2'",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "High row al macchinario",
+          "gruppo": "Schiena",
+          "attrezzo": "macchina",
+          "nota": "presa inversa singolo",
+          "rest": "2'",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Lento al Multipower seduto",
+          "gruppo": "Spalle",
+          "attrezzo": "smith",
+          "nota": "panca 75°, tieni il carico del test nelle settimane; se nella serie x max chiudi 8 reps o + alza il carico la volta successiva",
+          "rest": "2'30\"",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "10rm",
+                  "tipo": "test"
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Alzate laterali con manubri",
+          "gruppo": "Spalle",
+          "attrezzo": "manubri",
+          "rest": "1'30\"",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                },
+                {
+                  "reps": "15-20"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Curl manubri su panca 60°",
+          "gruppo": "Bicipiti",
+          "attrezzo": "manubri",
+          "rest": "0",
+          "superset": "A",
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "French press bilanciere ez",
+          "gruppo": "Tricipiti",
+          "attrezzo": "bilanciere",
+          "rest": "2'",
+          "superset": "A",
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Workout B",
+      "esercizi": [
+        {
+          "nome": "Stacco Rumeno con Bilanciere",
+          "gruppo": "Femorali",
+          "attrezzo": "bilanciere",
+          "nota": "discesa 3\" e fermo 1\" in basso; mantieni il carico del test nelle settimane e segui la progressione",
+          "rest": "2'30\"",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8rm",
+                  "tipo": "test"
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Leg press 45°",
+          "gruppo": "Quadricipiti",
+          "attrezzo": "macchina",
+          "nota": "discesa 3\" e fermo in basso 1\"; tieni il carico del test; se nella serie x max chiudi 8 reps o + alza il carico la volta successiva",
+          "rest": "2'30\"",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "10rm",
+                  "tipo": "test"
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Affondi alla smith",
+          "gruppo": "Quadricipiti",
+          "attrezzo": "smith",
+          "nota": "1 gamba per volta",
+          "rest": "2'",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Leg extension",
+          "gruppo": "Quadricipiti",
+          "attrezzo": "macchina",
+          "rest": "2'",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Leg curl da seduto",
+          "gruppo": "Femorali",
+          "attrezzo": "macchina",
+          "rest": "2'",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Curl al cavo basso",
+          "gruppo": "Bicipiti",
+          "attrezzo": "cavi",
+          "rest": "0",
+          "superset": "A",
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Push down barra",
+          "gruppo": "Tricipiti",
+          "attrezzo": "cavi",
+          "rest": "1'30\"",
+          "superset": "A",
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Workout C",
+      "esercizi": [
+        {
+          "nome": "Scala",
+          "gruppo": "Addome",
+          "attrezzo": "macchina",
+          "nota": "livello 7",
+          "tipoEsercizio": "durata",
+          "perSettimana": [
+            {
+              "durata": 10,
+              "parametri": "livello 7"
+            },
+            {
+              "durata": 11,
+              "parametri": "livello 7"
+            },
+            {
+              "durata": 12,
+              "parametri": "livello 7"
+            },
+            {
+              "durata": 13,
+              "parametri": "livello 7"
+            },
+            {
+              "durata": 14,
+              "parametri": "livello 7"
+            },
+            {
+              "durata": 15,
+              "parametri": "livello 7"
+            }
+          ]
+        },
+        {
+          "nome": "Tapis roulant",
+          "gruppo": "Addome",
+          "attrezzo": "macchina",
+          "tipoEsercizio": "durata",
+          "perSettimana": [
+            {
+              "durata": 20,
+              "parametri": "vel 5 km/h · pendenza 5%"
+            },
+            {
+              "durata": 22,
+              "parametri": "vel 5 km/h · pendenza 5%"
+            },
+            {
+              "durata": 24,
+              "parametri": "vel 5 km/h · pendenza 5%"
+            },
+            {
+              "durata": 26,
+              "parametri": "vel 5 km/h · pendenza 5%"
+            },
+            {
+              "durata": 28,
+              "parametri": "vel 5 km/h · pendenza 5%"
+            },
+            {
+              "durata": 30,
+              "parametri": "vel 5 km/h · pendenza 5%"
+            }
+          ]
+        },
+        {
+          "nome": "Leg raise",
+          "gruppo": "Addome",
+          "attrezzo": "corpo libero",
+          "rest": "0",
+          "superset": "C",
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Rotella",
+          "gruppo": "Addome",
+          "attrezzo": "corpo libero",
+          "rest": "0",
+          "superset": "C",
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Fitball",
+          "gruppo": "Addome",
+          "attrezzo": "corpo libero",
+          "rest": "1'30\"",
+          "superset": "C",
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nome": "Workout D",
+      "esercizi": [
+        {
+          "nome": "Lat machine avanti",
+          "gruppo": "Schiena",
+          "attrezzo": "macchina",
+          "rest": "2'",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                },
+                {
+                  "reps": "7-10"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Rowing machine singolo a carico libero",
+          "gruppo": "Schiena",
+          "attrezzo": "macchina",
+          "rest": "2'",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Panca 30° alla smith machine",
+          "gruppo": "Petto",
+          "attrezzo": "smith",
+          "nota": "discesa 3\" e fermo 1\" in basso; mantieni il carico del test nelle settimane e segui la progressione",
+          "rest": "2'30\"",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8rm",
+                  "tipo": "test"
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 6
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 7
+                },
+                {
+                  "reps": 6
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Chest press",
+          "gruppo": "Petto",
+          "attrezzo": "macchina",
+          "nota": "discesa 3\" e fermo in basso 1\"; tieni il carico del test; se nella serie x max chiudi 8 reps o + alza il carico la volta successiva",
+          "rest": "2'30\"",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "10rm",
+                  "tipo": "test"
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": 8
+                },
+                {
+                  "reps": "max",
+                  "tipo": "max"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Alzate lat a \"Y\" panca 45°",
+          "gruppo": "Spalle",
+          "attrezzo": "manubri",
+          "nota": "come visto insieme",
+          "rest": "1'30\"",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                },
+                {
+                  "reps": "10-15"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Alzate lat cavo basso altezza anca",
+          "gruppo": "Spalle",
+          "attrezzo": "cavi",
+          "nota": "sdraiato su panca piana, cavo altezza polso (orizzontale in partenza)",
+          "rest": "1'30\"",
+          "superset": null,
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "Curl manubri seduto panca 75°",
+          "gruppo": "Bicipiti",
+          "attrezzo": "manubri",
+          "nota": "alternato",
+          "rest": "0",
+          "superset": "A",
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "nome": "French press manubri Panca 30°",
+          "gruppo": "Tricipiti",
+          "attrezzo": "manubri",
+          "rest": "2'",
+          "superset": "A",
+          "perSettimana": [
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            },
+            {
+              "serie": [
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                },
+                {
+                  "reps": "8-12"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,183 @@
+﻿/* ============================================
+   LIFT â€” Libreria esercizi v2
+   ============================================ */
+
+.lib-search {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-body);
+  outline: none;
+  margin-bottom: var(--sp-3);
+  transition: border-color var(--t-fast);
+}
+.lib-search:focus {
+  border-color: var(--accent);
+}
+.lib-search::placeholder {
+  color: var(--text-dim-2);
+}
+
+.lib-counter {
+  font-size: var(--fs-small);
+  color: var(--text-dim-2);
+  margin-bottom: var(--sp-3);
+  font-family: var(--font);
+  font-weight: 500;
+}
+
+.lib-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+.lib-item {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  transition: background var(--t-fast), border-color var(--t-fast), transform var(--t-fast);
+}
+.lib-item:active {
+  background: var(--surface-2);
+  transform: scale(0.99);
+}
+.lib-name {
+  flex: 1;
+  font-weight: 600;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: var(--fs-body);
+  letter-spacing: -0.01em;
+}
+.lib-meta {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim-2);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.lib-tag-custom {
+  background: var(--accent-ghost);
+  color: var(--accent);
+  border-radius: var(--radius-pill);
+  padding: 2px var(--sp-2);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 800;
+}
+
+.lib-add {
+  margin-top: var(--sp-5);
+}
+
+/* Dettaglio esercizio */
+.exd-head {
+  margin-bottom: var(--sp-5);
+}
+.exd-name {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin-bottom: var(--sp-3);
+}
+.exd-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+}
+.exd-tag {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  padding: 4px var(--sp-3);
+  font-size: var(--fs-small);
+  color: var(--text-dim);
+  text-transform: capitalize;
+  font-weight: 600;
+}
+
+.exd-section {
+  margin-top: var(--sp-5);
+}
+.exd-section h3 {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim-2);
+  font-weight: 700;
+  margin-bottom: var(--sp-3);
+}
+.exd-section p {
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.exd-section ol {
+  padding-left: 1.4em;
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.exd-section ol li {
+  margin-bottom: 6px;
+}
+
+/* Modale custom */
+.cust-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  text-align: left;
+  margin-top: var(--sp-4);
+}
+.cust-form label {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim-2);
+  font-weight: 700;
+  display: block;
+  margin-bottom: var(--sp-1);
+}
+.cust-form input,
+.cust-form select {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  color: var(--text);
+  padding: var(--sp-3) var(--sp-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-body);
+  font-family: inherit;
+  outline: none;
+  transition: border-color var(--t-fast);
+}
+.cust-form input:focus,
+.cust-form select:focus {
+  border-color: var(--accent);
+}
+
+/* select custom arrow */
+.cust-form select,
+.trend-picker {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23515c6e' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--sp-4) center;
+  padding-right: var(--sp-7);
+}

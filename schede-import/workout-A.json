@@ -1,0 +1,130 @@
+{
+  "nome": "Workout A",
+  "settimane": 6,
+  "esercizi": [
+    {
+      "nome": "Spinte manubri panca 30°",
+      "gruppo": "Petto",
+      "attrezzo": "manubri",
+      "nota": "mantieni il carico del test nelle settimane e segui la progressione",
+      "rest": "2'30\"",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"8rm","tipo":"test"}, {"reps":6}, {"reps":6} ] },
+        { "serie": [ {"reps":6}, {"reps":6}, {"reps":6} ] },
+        { "serie": [ {"reps":6}, {"reps":6}, {"reps":6}, {"reps":6} ] },
+        { "serie": [ {"reps":7}, {"reps":6}, {"reps":6}, {"reps":6} ] },
+        { "serie": [ {"reps":7}, {"reps":7}, {"reps":6}, {"reps":6} ] },
+        { "serie": [ {"reps":7}, {"reps":7}, {"reps":7}, {"reps":6} ] }
+      ]
+    },
+    {
+      "nome": "Croci ai cavi alti",
+      "gruppo": "Petto",
+      "attrezzo": "cavi",
+      "nota": "cavi stretti con panca dritta, cavi altezza sterno",
+      "rest": "1'30\"",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] }
+      ]
+    },
+    {
+      "nome": "Pulley basso",
+      "gruppo": "Schiena",
+      "attrezzo": "macchina",
+      "rest": "2'",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"} ] }
+      ]
+    },
+    {
+      "nome": "High row al macchinario",
+      "gruppo": "Schiena",
+      "attrezzo": "macchina",
+      "nota": "presa inversa singolo",
+      "rest": "2'",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"} ] },
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"} ] },
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"}, {"reps":"7-10"} ] },
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"}, {"reps":"7-10"} ] },
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"}, {"reps":"7-10"}, {"reps":"7-10"} ] },
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"} ] }
+      ]
+    },
+    {
+      "nome": "Lento al Multipower seduto",
+      "gruppo": "Spalle",
+      "attrezzo": "smith",
+      "nota": "panca 75°, tieni il carico del test nelle settimane; se nella serie x max chiudi 8 reps o + alza il carico la volta successiva",
+      "rest": "2'30\"",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"10rm","tipo":"test"}, {"reps":8}, {"reps":8} ] },
+        { "serie": [ {"reps":8}, {"reps":8}, {"reps":"max","tipo":"max"} ] },
+        { "serie": [ {"reps":8}, {"reps":8}, {"reps":"max","tipo":"max"} ] },
+        { "serie": [ {"reps":8}, {"reps":8}, {"reps":"max","tipo":"max"} ] },
+        { "serie": [ {"reps":8}, {"reps":8}, {"reps":"max","tipo":"max"} ] },
+        { "serie": [ {"reps":8}, {"reps":8}, {"reps":"max","tipo":"max"} ] }
+      ]
+    },
+    {
+      "nome": "Alzate laterali con manubri",
+      "gruppo": "Spalle",
+      "attrezzo": "manubri",
+      "rest": "1'30\"",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"15-20"}, {"reps":"15-20"} ] },
+        { "serie": [ {"reps":"15-20"}, {"reps":"15-20"} ] },
+        { "serie": [ {"reps":"15-20"}, {"reps":"15-20"}, {"reps":"15-20"} ] },
+        { "serie": [ {"reps":"15-20"}, {"reps":"15-20"}, {"reps":"15-20"} ] },
+        { "serie": [ {"reps":"15-20"}, {"reps":"15-20"}, {"reps":"15-20"}, {"reps":"15-20"} ] },
+        { "serie": [ {"reps":"15-20"}, {"reps":"15-20"}, {"reps":"15-20"}, {"reps":"15-20"} ] }
+      ]
+    },
+    {
+      "nome": "Curl manubri su panca 60°",
+      "gruppo": "Bicipiti",
+      "attrezzo": "manubri",
+      "rest": "0",
+      "superset": "A",
+      "perSettimana": [
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] }
+      ]
+    },
+    {
+      "nome": "French press bilanciere ez",
+      "gruppo": "Tricipiti",
+      "attrezzo": "bilanciere",
+      "rest": "2'",
+      "superset": "A",
+      "perSettimana": [
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,265 @@
+﻿/* ============================================
+   LIFT â€” Fine sessione (3 step) v2
+   ============================================ */
+
+#screen-finish {
+  padding: var(--sp-5) var(--sp-4) var(--sp-7);
+  display: none;
+}
+#screen-finish.active {
+  display: block;
+}
+
+.fin-step {
+  display: none;
+}
+.fin-step.active {
+  display: block;
+}
+
+.fin-title {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  margin-bottom: var(--sp-2);
+}
+.fin-sub {
+  color: var(--text-dim-2);
+  font-size: var(--fs-small);
+  margin-bottom: var(--sp-5);
+  font-weight: 500;
+}
+
+/* Mood / Energia â€” 5 chips */
+.fin-block {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+.fin-block-label {
+  font-weight: 700;
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs-small);
+  letter-spacing: 0.02em;
+}
+.fin-chips {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: var(--sp-1);
+}
+.fin-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) 2px;
+  color: var(--text-dim-2);
+  transition: transform var(--t-fast), background var(--t-fast),
+    border-color var(--t-fast), color var(--t-fast), box-shadow var(--t-fast);
+}
+.fin-chip svg {
+  width: 26px;
+  height: 26px;
+  stroke-width: 1.6;
+}
+.fin-chip .fc-lab {
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 700;
+}
+.fin-chip:active {
+  transform: scale(0.94);
+}
+.fin-chip.selected {
+  background: var(--accent-ghost);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Note */
+.fin-notes {
+  width: 100%;
+  background: var(--surface);
+  border: 1.5px solid var(--border-soft);
+  border-radius: var(--radius);
+  color: var(--text);
+  padding: var(--sp-4);
+  font-family: inherit;
+  font-size: var(--fs-body);
+  resize: vertical;
+  min-height: 96px;
+  outline: none;
+  margin-bottom: var(--sp-5);
+  transition: border-color var(--t-fast);
+  line-height: 1.5;
+}
+.fin-notes:focus {
+  border-color: var(--accent);
+}
+
+.fin-notes::placeholder {
+  color: var(--text-dim-2);
+}
+
+/* Save button */
+.fin-save-btn,
+.fin-done-btn {
+  width: 100%;
+  background: var(--accent);
+  color: var(--on-accent);
+  padding: var(--sp-4);
+  border-radius: var(--radius-sm);
+  font-weight: 800;
+  font-size: var(--fs-body);
+  letter-spacing: 0.01em;
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--t-fast), box-shadow var(--t-fast), opacity var(--t-fast);
+}
+.fin-save-btn:active,
+.fin-done-btn:active {
+  transform: scale(0.98);
+  box-shadow: none;
+}
+.fin-save-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* Step 2: analisi */
+.fin-analyzing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-7) 0;
+  gap: var(--sp-4);
+  min-height: 40vh;
+}
+.fin-spin {
+  width: 52px;
+  height: 52px;
+  border: 3px solid var(--surface-3);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+  /* no glow filter */
+}
+.fin-analyzing-label {
+  font-size: var(--fs-small);
+  color: var(--text-dim-2);
+  font-family: var(--font);
+  letter-spacing: 0.06em;
+}
+
+/* Step 3: risultato */
+.fin-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-5);
+}
+.fin-stat {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-2);
+  text-align: center;
+}
+.fin-stat .fs-val {
+  font-size: 1.35rem;
+  font-weight: 800;
+  font-family: var(--font);
+  letter-spacing: -0.02em;
+  display: block;
+}
+.fin-stat .fs-lab {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim-2);
+  margin-top: 4px;
+  display: block;
+  font-weight: 700;
+}
+
+/* PR rows */
+.fin-prs-title {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-micro);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim-2);
+  font-weight: 700;
+}
+.fin-prs {
+  margin-top: var(--sp-3);
+  margin-bottom: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.fin-pr {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  background: var(--gold-ghost);
+  border: 1px solid rgba(201, 206, 216, 0.28);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4);
+}
+.fin-pr .fpr-star {
+  color: var(--gold);
+  font-size: 1.1rem;
+}
+.fin-pr .fpr-name {
+  font-weight: 700;
+  flex: 1;
+  font-size: var(--fs-small);
+}
+.fin-pr .fpr-val {
+  font-weight: 800;
+  color: var(--accent);
+  font-family: var(--font);
+  letter-spacing: -0.01em;
+}
+.fin-pr .fpr-type {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim-2);
+  margin-right: var(--sp-2);
+  font-weight: 700;
+}
+
+/* AI feedback block */
+/* Recap della nota personale a fine sessione */
+.fin-note-recap {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: var(--sp-5);
+  margin-bottom: var(--sp-5);
+}
+.fin-note-label {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 800;
+  font-family: var(--font);
+  margin-bottom: var(--sp-2);
+}
+.fin-note-text {
+  line-height: 1.6;
+  font-size: var(--fs-small);
+  color: var(--text-dim);
+}

@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -f _v7.mjs _v7_*.png)",
+      "Bash(rm -rf /tmp/tmp.h980nUj53f)"
+    ]
+  }
+}

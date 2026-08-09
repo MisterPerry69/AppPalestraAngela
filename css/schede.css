@@ -1,0 +1,171 @@
+﻿/* ============================================
+   LIFT â€” Schede allenamenti v2
+   ============================================ */
+
+.schede-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.sch-item {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-4);
+  text-align: left;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  transition: background var(--t-fast), transform var(--t-fast), border-color var(--t-fast);
+  overflow: hidden;
+  min-height: 72px;
+}
+.sch-item:active {
+  background: var(--surface-2);
+  transform: scale(0.982);
+}
+
+.sch-illus {
+  position: absolute;
+  right: var(--sp-3);
+  bottom: 0;
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.sch-item .sch-info {
+  flex: 1;
+  min-width: 0;
+  max-width: calc(100% - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.sch-item .sch-name {
+  font-weight: 700;
+  font-size: var(--fs-body);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+.sch-item .sch-meta {
+  font-size: var(--fs-small);
+  color: var(--text-dim-2);
+  margin-top: 3px;
+  font-weight: 500;
+}
+.sch-item .sch-arrow {
+  color: var(--text-dim-2);
+  opacity: 0.45;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+/* Dettaglio scheda */
+.sch-detail-name {
+  flex: 1;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.sch-detail-notes {
+  color: var(--text-dim-2);
+  font-size: var(--fs-small);
+  margin-bottom: var(--sp-4);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* Block row */
+.sch-block {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4);
+  margin-bottom: var(--sp-2);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  transition: border-color var(--t-fast);
+}
+.sch-block:hover {
+  border-color: var(--border);
+}
+.sch-block-main {
+  flex: 1;
+  min-width: 0;
+}
+.sch-block-name {
+  font-weight: 700;
+  font-size: var(--fs-body);
+  letter-spacing: -0.01em;
+}
+.sch-block-detail {
+  font-size: var(--fs-small);
+  color: var(--text-dim);
+  margin-top: 3px;
+  font-family: var(--font-mono);
+  font-weight: 400;
+}
+.sch-block-note {
+  font-size: var(--fs-small);
+  color: var(--text-dim-2);
+  font-style: italic;
+  margin-top: 4px;
+  line-height: 1.4;
+}
+.sch-ss {
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--fs-micro);
+  color: var(--accent);
+  margin-left: var(--sp-1);
+}
+
+.sch-block-edit {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: var(--text-dim-2);
+  transition: background var(--t-fast), color var(--t-fast), transform var(--t-fast);
+}
+.sch-block-edit:active {
+  background: var(--surface-3);
+  transform: scale(0.92);
+}
+.sch-block-edit svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.75;
+}
+
+/* Form nuovo esercizio */
+.newex-lab {
+  display: block;
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: var(--fs-micro);
+  color: var(--text-dim-2);
+  margin: var(--sp-3) 0 var(--sp-1);
+}
+.newex-field {
+  width: 100%;
+  margin: 0;
+}

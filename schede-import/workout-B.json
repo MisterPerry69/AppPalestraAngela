@@ -1,0 +1,114 @@
+{
+  "nome": "Workout B",
+  "settimane": 6,
+  "esercizi": [
+    {
+      "nome": "Stacco Rumeno con Bilanciere",
+      "gruppo": "Femorali",
+      "attrezzo": "bilanciere",
+      "nota": "discesa 3\" e fermo 1\" in basso; mantieni il carico del test nelle settimane e segui la progressione",
+      "rest": "2'30\"",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"8rm","tipo":"test"}, {"reps":6}, {"reps":6} ] },
+        { "serie": [ {"reps":6}, {"reps":6}, {"reps":6} ] },
+        { "serie": [ {"reps":6}, {"reps":6}, {"reps":6}, {"reps":6} ] },
+        { "serie": [ {"reps":7}, {"reps":6}, {"reps":6}, {"reps":6} ] },
+        { "serie": [ {"reps":7}, {"reps":7}, {"reps":6}, {"reps":6} ] },
+        { "serie": [ {"reps":7}, {"reps":7}, {"reps":7}, {"reps":6} ] }
+      ]
+    },
+    {
+      "nome": "Leg press 45°",
+      "gruppo": "Quadricipiti",
+      "attrezzo": "macchina",
+      "nota": "discesa 3\" e fermo in basso 1\"; tieni il carico del test; se nella serie x max chiudi 8 reps o + alza il carico la volta successiva",
+      "rest": "2'30\"",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"10rm","tipo":"test"}, {"reps":8}, {"reps":8} ] },
+        { "serie": [ {"reps":8}, {"reps":8}, {"reps":"max","tipo":"max"} ] },
+        { "serie": [ {"reps":8}, {"reps":8}, {"reps":"max","tipo":"max"} ] },
+        { "serie": [ {"reps":8}, {"reps":8}, {"reps":"max","tipo":"max"} ] },
+        { "serie": [ {"reps":8}, {"reps":8}, {"reps":"max","tipo":"max"} ] },
+        { "serie": [ {"reps":8}, {"reps":8}, {"reps":"max","tipo":"max"} ] }
+      ]
+    },
+    {
+      "nome": "Affondi alla smith",
+      "gruppo": "Quadricipiti",
+      "attrezzo": "smith",
+      "nota": "1 gamba per volta",
+      "rest": "2'",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"} ] },
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"} ] },
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"} ] },
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"}, {"reps":"7-10"} ] },
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"}, {"reps":"7-10"} ] },
+        { "serie": [ {"reps":"7-10"}, {"reps":"7-10"}, {"reps":"7-10"} ] }
+      ]
+    },
+    {
+      "nome": "Leg extension",
+      "gruppo": "Quadricipiti",
+      "attrezzo": "macchina",
+      "rest": "2'",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] }
+      ]
+    },
+    {
+      "nome": "Leg curl da seduto",
+      "gruppo": "Femorali",
+      "attrezzo": "macchina",
+      "rest": "2'",
+      "superset": null,
+      "perSettimana": [
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] },
+        { "serie": [ {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"}, {"reps":"8-12"} ] }
+      ]
+    },
+    {
+      "nome": "Curl al cavo basso",
+      "gruppo": "Bicipiti",
+      "attrezzo": "cavi",
+      "rest": "0",
+      "superset": "A",
+      "perSettimana": [
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] },
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] },
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] },
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] },
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] },
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] }
+      ]
+    },
+    {
+      "nome": "Push down barra",
+      "gruppo": "Tricipiti",
+      "attrezzo": "cavi",
+      "rest": "1'30\"",
+      "superset": "A",
+      "perSettimana": [
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] },
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] },
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] },
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] },
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] },
+        { "serie": [ {"reps":"10-15"}, {"reps":"10-15"}, {"reps":"10-15"} ] }
+      ]
+    }
+  ]
+}

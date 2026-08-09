@@ -1,0 +1,277 @@
+﻿/* ============================================
+   LIFT â€” Storico + Dettaglio sessione v2
+   ============================================ */
+
+/* Shared header used across many screens */
+.history-head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-5);
+}
+.history-title {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  flex: 1;
+}
+
+/* History list */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.history-item {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3) var(--sp-4);
+  text-align: left;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  transition: background var(--t-fast), transform var(--t-fast), border-color var(--t-fast);
+}
+.history-item:active {
+  transform: scale(0.982);
+  background: var(--surface-2);
+}
+
+.hi-date {
+  text-align: center;
+  flex-shrink: 0;
+  width: 48px;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-1) 0;
+}
+.hi-date .d-day {
+  font-size: 1.3rem;
+  font-weight: 800;
+  font-family: var(--font);
+  line-height: 1;
+  display: block;
+}
+.hi-date .d-mon {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-dim-2);
+  font-weight: 700;
+  margin-top: 2px;
+  display: block;
+}
+
+.hi-body {
+  flex: 1;
+  min-width: 0;
+}
+.hi-name {
+  font-weight: 700;
+  font-size: var(--fs-body);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+}
+.hi-meta {
+  font-size: var(--fs-small);
+  color: var(--text-dim-2);
+  margin-top: 3px;
+  font-weight: 500;
+}
+
+.hi-prs {
+  color: var(--accent);
+  font-weight: 800;
+  font-size: var(--fs-small);
+  flex-shrink: 0;
+  font-family: var(--font);
+}
+
+/* Dettaglio sessione */
+.sd-head {
+  margin-bottom: var(--sp-5);
+}
+.sd-date {
+  color: var(--text-dim-2);
+  font-size: var(--fs-small);
+  font-family: var(--font);
+  letter-spacing: 0.03em;
+}
+.sd-name {
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  margin: var(--sp-1) 0 var(--sp-3);
+}
+.sd-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-2);
+}
+.sd-stat {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3);
+  text-align: center;
+}
+.sd-stat .v {
+  font-size: 1.15rem;
+  font-weight: 800;
+  font-family: var(--font);
+  letter-spacing: -0.02em;
+  display: block;
+}
+.sd-stat .l {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-dim-2);
+  margin-top: 4px;
+  display: block;
+  font-weight: 700;
+}
+
+.sd-feedback {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  margin: var(--sp-5) 0;
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--text-dim);
+  position: relative;
+}
+.sd-feedback::before {
+  content: "AI";
+  position: absolute;
+  top: var(--sp-3);
+  right: var(--sp-4);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  font-weight: 800;
+  color: var(--accent);
+  opacity: 0.55;
+  font-family: var(--font);
+}
+
+/* Nota personale di fine sessione (sostituisce il vecchio riquadro AI) */
+.sd-note {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  margin: var(--sp-5) 0;
+}
+.sd-note-label {
+  font-size: var(--fs-micro);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 800;
+  font-family: var(--font);
+  margin-bottom: var(--sp-2);
+}
+.sd-note-text {
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+
+.sd-section-label {
+  margin: var(--sp-5) 0 var(--sp-2);
+}
+
+.sd-ex {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+.sd-ex-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-3);
+}
+.sd-ex-name {
+  font-weight: 700;
+  font-size: var(--fs-body);
+  letter-spacing: -0.01em;
+}
+.sd-ex-pr {
+  flex-shrink: 0;
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--fs-micro);
+  color: var(--pr);
+  background: var(--pr-ghost);
+  border-radius: var(--radius-pill);
+  padding: 2px 8px;
+  font-weight: 700;
+}
+.sd-ex-rows {
+  display: flex;
+  flex-direction: column;
+}
+.sd-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) 0;
+  border-top: 1px solid var(--border-soft);
+}
+.sd-row:first-child { border-top: none; }
+.sd-row-n {
+  font-family: var(--font-mono);
+  font-size: var(--fs-micro);
+  color: var(--text-dim-2);
+  width: 18px;
+  flex-shrink: 0;
+}
+.sd-row-val {
+  flex: 1;
+  font-size: var(--fs-body);
+  color: var(--text);
+}
+.sd-row-val strong {
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+.sd-row-skip .sd-row-val {
+  color: var(--text-dim-2);
+  text-decoration: line-through;
+}
+.sd-row-type {
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.6rem;
+  padding: 1px 7px;
+  border-radius: var(--radius-pill);
+  flex-shrink: 0;
+}
+.sd-row-type-test { background: var(--gold-ghost); color: var(--gold); }
+.sd-row-type-max { background: var(--accent-ghost); color: var(--accent); }
+.sd-row-type-warmup { background: var(--surface-3); color: var(--text-dim); }
+.sd-row-type-failure { background: var(--danger-ghost); color: var(--danger); }
+
+/* Nota inserita durante l'allenamento, nel dettaglio sessione */
+.sd-row-note {
+  font-size: var(--fs-small);
+  color: var(--text-dim);
+  font-style: italic;
+  margin: 2px 0 var(--sp-2) 26px;
+  line-height: 1.4;
+}
