@@ -4,7 +4,7 @@
 
 const GREETINGS = [
   "Ciao, {name}",
-  "È ora di allenarsi, {nome}.",
+  "È ora di allenarsi, {name}.",
   "Pronta, {name}?",
   "Bentornata, {name}",
   "Pronta a spaccar tutto, {name}?",
