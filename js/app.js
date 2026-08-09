@@ -171,9 +171,7 @@ async function boot() {
     if (streak) {
       streak.innerHTML =
         '<span class="text-danger">' +
-        (USE_MOCK
-          ? "Errore mock: " + String(err.message || err)
-          : "Backend non raggiungibile. Controlla che il deploy GAS sia su 'Chiunque' e che l'URL in api.js sia corretto.") +
+        escapeHtml(String(err.message || err)) +
         "</span>";
     }
   } finally {

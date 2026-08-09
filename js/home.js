@@ -4,11 +4,11 @@
 
 const GREETINGS = [
   "Ciao, {name}",
-  "È ora di allenarsi, {nome}.",
-  "Pronta, {name}?",
-  "Bentornata, {name}",
-  "Pronta a spaccar tutto, {name}?",
-  "Daje {name}, si pompa!",
+  "Si torna in pista, {name}",
+  "Pronto, {name}?",
+  "Bentornato, {name}",
+  "Che si pesta oggi, {name}?",
+  "Forza {name}, si lavora",
 ];
 
 function randomGreeting(name) {
@@ -66,6 +66,15 @@ function daysSinceLabel(days) {
 
 async function renderHome() {
   const data = await apiGet("lift_get_data");
+  if (!data || data.status !== "OK" || !data.profile) {
+    // Il backend ha risposto ma con un errore (es. setup mancante): mostriamo il motivo vero.
+    throw new Error(
+      (data && data.message) ||
+        "Il backend non ha restituito i dati (status: " +
+          (data && data.status) +
+          ")."
+    );
+  }
   const { profile, streakWeeks, templates } = data;
   const programs = data.programs || [];
 
