@@ -525,6 +525,34 @@
   outline: none;
 }
 .pdf-imp-ex-name:focus { border-color: var(--accent); }
+.pdf-imp-ex-del {
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  background: var(--danger-ghost);
+  color: var(--danger);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+.pdf-imp-ex-add {
+  width: 100%;
+  margin-top: var(--sp-2);
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  color: var(--text-dim-2);
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: var(--fs-micro);
+  font-weight: 600;
+  padding: var(--sp-3);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--t-fast), color var(--t-fast);
+}
+.pdf-imp-ex-add:active { border-color: var(--accent); color: var(--accent); }
 .pdf-imp-sup {
   flex-shrink: 0;
   font-family: var(--font-cond);
@@ -566,7 +594,9 @@
   display: flex;
   align-items: center;
   gap: var(--sp-2);
+  flex-wrap: wrap;
 }
+.pdf-imp-set .pdf-imp-input.xs { width: 56px; }
 .pdf-imp-set-n {
   font-family: var(--font-mono);
   font-size: var(--fs-micro);

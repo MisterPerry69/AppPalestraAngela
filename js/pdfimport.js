@@ -12,7 +12,7 @@ let pdfImportState = null;
 const PDF_SET_TYPES = ["work", "warmup", "test", "max", "failure"];
 
 /**
- * Apre l'editor sul programma estratto.
+ * Apre l'editor sul programma estratto dal PDF.
  * @param {object} program - JSON "umano" prodotto dall'estrattore.
  * @param {string} pdfBase64 - per "Rigenera con AI".
  */
@@ -20,9 +20,68 @@ function openPdfImportEditor(program, pdfBase64) {
   pdfImportState = {
     program: _normalizeProgram(program),
     pdfBase64: pdfBase64 || null,
+    programId: null, // nuovo programma
+    onSaved: null,
   };
   showScreen("editor");
   renderPdfImportEditor();
+}
+
+/**
+ * Apre lo STESSO editor per MODIFICARE un programma esistente.
+ * @param {object} prog - programma dal backend (formato interno: blocks).
+ * @param {function} [onSaved] - callback dopo il salvataggio.
+ */
+function openProgramEditEditor(prog, onSaved) {
+  pdfImportState = {
+    program: _normalizeProgram(_programToHuman(prog)),
+    pdfBase64: null,
+    programId: prog.id,
+    onSaved: onSaved || null,
+  };
+  showScreen("editor");
+  renderPdfImportEditor();
+}
+
+/**
+ * Inverso di parseImportProgrammaJson: formato interno (blocks) -> formato "umano".
+ * Usato per precompilare l'editor da un programma salvato.
+ */
+function _programToHuman(prog) {
+  const weeks = parseInt(prog.weeks, 10) || 1;
+  return {
+    nome: prog.nome || "",
+    dataInizio: prog.dataInizio || "",
+    settimane: weeks,
+    workout: (prog.workouts || []).map((w) => ({
+      nome: w.name || "",
+      esercizi: ((w.structure && w.structure.blocks) || []).map((b) => {
+        const kind = b.kind === "durata" ? "durata" : "serie";
+        const perSettimana = (b.perWeek || []).map((wk) => {
+          if (kind === "durata") {
+            return { durata: wk.durataMin || 0, parametri: wk.parametri || "" };
+          }
+          return {
+            serie: (wk.sets || []).map((s) => {
+              const set = { reps: s.reps, tipo: s.type || "work" };
+              if (s.restBefore != null) set.restBefore = s.restBefore;
+              return set;
+            }),
+          };
+        });
+        return {
+          nome: b.exerciseName || "",
+          gruppo: b.muscle || "",
+          attrezzo: b.attrezzo || "",
+          nota: b.note || "",
+          rest: b.rest || "",
+          superset: b.supersetGroup || null,
+          tipoEsercizio: kind,
+          perSettimana: perSettimana,
+        };
+      }),
+    })),
+  };
 }
 
 /** Porta il JSON grezzo in una forma sicura da editare (difensivo sui campi). */
@@ -93,10 +152,13 @@ function _normWeek(w, kind) {
   return {
     serie: serie.map((s) => {
       const t = String((s && (s.tipo || s.type)) || "work").toLowerCase();
-      return {
+      const out = {
         reps: s && s.reps != null && s.reps !== "" ? s.reps : 8,
         tipo: PDF_SET_TYPES.includes(t) ? t : "work",
       };
+      const rb = s && parseInt(s.restBefore, 10);
+      if (Number.isFinite(rb) && rb > 0) out.restBefore = rb;
+      return out;
     }),
   };
 }
@@ -109,7 +171,7 @@ function renderPdfImportEditor() {
   root.innerHTML = `
     <div class="editor-head">
       <button class="icon-btn" id="pdf-back" aria-label="Indietro">${iconSvg("arrow-left")}</button>
-      <span class="editor-title-input" style="cursor:default">Correggi la scheda</span>
+      <span class="editor-title-input" style="cursor:default">${pdfImportState.programId ? "Modifica scheda" : "Correggi la scheda"}</span>
     </div>
 
     <div class="pdf-imp-meta">
@@ -142,9 +204,13 @@ function renderPdfImportEditor() {
   _wirePdfMeta();
 
   document.getElementById("pdf-back").onclick = () => {
+    const cb = pdfImportState && pdfImportState.onSaved;
     pdfImportState = null;
-    showScreen("home");
-    renderHome();
+    if (cb) cb(); // torna al dettaglio programma
+    else {
+      showScreen("home");
+      renderHome();
+    }
   };
   document.getElementById("pdf-save").onclick = _pdfSave;
   const regen = document.getElementById("pdf-regen");
@@ -165,6 +231,7 @@ function _pdfWorkoutHtml(w, wi) {
     <div class="pdf-imp-wk" data-wi="${wi}">
       <input class="pdf-imp-wk-name" data-wi="${wi}" value="${escapeAttr(w.nome)}" placeholder="Nome workout" />
       ${w.esercizi.map((ex, ei) => _pdfExHtml(ex, wi, ei)).join("")}
+      <button class="pdf-imp-ex-add" data-wi="${wi}" type="button">+ Aggiungi esercizio</button>
     </div>`;
 }
 
@@ -180,6 +247,7 @@ function _pdfExHtml(ex, wi, ei) {
         <input class="pdf-imp-ex-name" data-f="nome" data-wi="${wi}" data-ei="${ei}"
           value="${escapeAttr(ex.nome)}" placeholder="Nome esercizio" />
         ${supLabel}
+        <button class="pdf-imp-ex-del" data-wi="${wi}" data-ei="${ei}" type="button" title="Rimuovi esercizio" aria-label="Rimuovi esercizio">✕</button>
       </div>
       <div class="pdf-imp-ex-fields">
         <input class="pdf-imp-input sm" data-f="gruppo" data-wi="${wi}" data-ei="${ei}"
@@ -220,6 +288,8 @@ function _pdfWeekHtml(ex, wk, wi, ei, si) {
         <select class="pdf-imp-sel" data-f="tipo" data-wi="${wi}" data-ei="${ei}" data-si="${si}" data-ri="${ri}">
           ${PDF_SET_TYPES.map((t) => `<option value="${t}"${t === s.tipo ? " selected" : ""}>${t}</option>`).join("")}
         </select>
+        <input class="pdf-imp-input xs" data-f="restBefore" data-wi="${wi}" data-ei="${ei}" data-si="${si}" data-ri="${ri}"
+          type="number" min="0" value="${s.restBefore != null ? escapeAttr(s.restBefore) : ""}" placeholder="rest″" title="Rest-pause prima di questa serie (secondi)" />
         <button class="pdf-imp-set-del" data-wi="${wi}" data-ei="${ei}" data-si="${si}" data-ri="${ri}" type="button" title="Togli serie">−</button>
       </div>`
     )
@@ -297,6 +367,16 @@ function _wirePdfWorkouts(wrap) {
       P.workout[wi].esercizi[ei].perSettimana[si].serie[ri].tipo = sel.value;
     };
   });
+  // rest-pause (restBefore) per serie
+  wrap.querySelectorAll('.pdf-imp-set input[data-f="restBefore"]').forEach((inp) => {
+    inp.oninput = () => {
+      const { wi, ei, si, ri } = _idx(inp);
+      const set = P.workout[wi].esercizi[ei].perSettimana[si].serie[ri];
+      const rb = parseInt(inp.value, 10);
+      if (Number.isFinite(rb) && rb > 0) set.restBefore = rb;
+      else delete set.restBefore;
+    };
+  });
   // durata / parametri
   wrap.querySelectorAll('input[data-f="durata"]').forEach((inp) => {
     inp.oninput = () => {
@@ -330,6 +410,111 @@ function _wirePdfWorkouts(wrap) {
       }
     };
   });
+
+  // rimuovi esercizio
+  wrap.querySelectorAll(".pdf-imp-ex-del").forEach((btn) => {
+    btn.onclick = async () => {
+      const { wi, ei } = _idx(btn);
+      const ex = P.workout[wi].esercizi[ei];
+      const ok = await liftConfirm(
+        "Rimuovere " + (ex.nome || "questo esercizio") + " dalla scheda?",
+        { okLabel: "Rimuovi", danger: true }
+      );
+      if (!ok) return;
+      P.workout[wi].esercizi.splice(ei, 1);
+      _renderPdfWorkouts();
+    };
+  });
+
+  // aggiungi esercizio (dal catalogo)
+  wrap.querySelectorAll(".pdf-imp-ex-add").forEach((btn) => {
+    btn.onclick = () => {
+      const wi = parseInt(btn.dataset.wi, 10);
+      _openAddExercisePicker(wi);
+    };
+  });
+}
+
+/** Serie base (una work per settimana) per un nuovo esercizio. */
+function _blankExercise(nome, gruppo, attrezzo, settimane) {
+  const perSettimana = [];
+  for (let i = 0; i < settimane; i++) {
+    perSettimana.push({ serie: [{ reps: 8, tipo: "work" }] });
+  }
+  return {
+    nome: nome || "",
+    gruppo: gruppo || "",
+    attrezzo: attrezzo || "",
+    nota: "",
+    rest: "",
+    superset: null,
+    tipoEsercizio: "serie",
+    perSettimana: perSettimana,
+  };
+}
+
+/** Picker catalogo per aggiungere un esercizio al workout wi. */
+function _openAddExercisePicker(wi) {
+  const catalog = typeof EXERCISES_CATALOG !== "undefined" ? EXERCISES_CATALOG : [];
+  let m = document.getElementById("pdf-add-modal");
+  if (!m) {
+    m = document.createElement("div");
+    m.id = "pdf-add-modal";
+    m.className = "ov-modal";
+    document.body.appendChild(m);
+    m.addEventListener("click", (e) => {
+      if (e.target === m) m.classList.remove("open");
+    });
+  }
+  const renderList = (q) => {
+    const query = (q || "").trim().toLowerCase();
+    const filtered = catalog.filter(
+      (e) => !query || String(e.nome).toLowerCase().includes(query)
+    );
+    return filtered.length
+      ? filtered
+          .map(
+            (e) => `
+        <button class="addex-item" data-id="${escapeAttr(e.id)}">
+          <span class="addex-name">${escapeHtml(e.nome)}</span>
+          <span class="addex-meta">${escapeHtml(e.gruppo || "")}</span>
+        </button>`
+          )
+          .join("")
+      : `<div class="empty-state">Nessun esercizio nel catalogo per questa ricerca.</div>`;
+  };
+  m.innerHTML = `
+    <div class="ov-sheet">
+      <div class="ov-head">
+        <div class="ov-title" style="font-size:1.2rem">Aggiungi esercizio</div>
+        <button class="ov-close" id="pdfadd-close">✕</button>
+      </div>
+      <input class="addex-search" id="pdfadd-search" placeholder="Cerca esercizio…" />
+      <div class="ov-list" id="pdfadd-list">${renderList("")}</div>
+    </div>`;
+
+  const addFromCatalog = (id) => {
+    const cat = catalog.find((e) => String(e.id) === String(id));
+    if (!cat) return;
+    const settimane = pdfImportState.program.settimane;
+    pdfImportState.program.workout[wi].esercizi.push(
+      _blankExercise(cat.nome, cat.gruppo || "", cat.attrezzo || "", settimane)
+    );
+    m.classList.remove("open");
+    _renderPdfWorkouts();
+  };
+  const wire = () => {
+    m.querySelectorAll(".addex-item").forEach((it) => {
+      it.onclick = () => addFromCatalog(it.dataset.id);
+    });
+  };
+  wire();
+  m.querySelector("#pdfadd-close").onclick = () => m.classList.remove("open");
+  m.querySelector("#pdfadd-search").oninput = (e) => {
+    document.getElementById("pdfadd-list").innerHTML = renderList(e.target.value);
+    wire();
+  };
+  m.classList.add("open");
 }
 
 /* ---------- SALVA / RIGENERA ---------- */
@@ -352,16 +537,24 @@ async function _pdfSave() {
   const btn = document.getElementById("pdf-save");
   btn.textContent = "Salvataggio…";
   btn.disabled = true;
+  const editId = pdfImportState.programId; // se presente = modifica in-place
+  const onSaved = pdfImportState.onSaved;
   try {
-    await apiPost("lift_import_programma", {
+    const payload = {
       nome: prog.name,
       dataInizio: prog.dataInizio,
       weeks: prog.weeks,
       workouts: prog.workouts,
-    });
+    };
+    if (editId) payload.id = editId; // aggiorna il programma esistente
+    await apiPost("lift_import_programma", payload);
     pdfImportState = null;
-    showScreen("home");
-    await renderHome();
+    if (editId && onSaved) {
+      onSaved(); // torna al dettaglio programma aggiornato
+    } else {
+      showScreen("home");
+      await renderHome();
+    }
   } catch (e) {
     errBox.textContent = "Errore import: " + (e.message || e);
     errBox.hidden = false;

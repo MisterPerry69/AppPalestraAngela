@@ -173,7 +173,11 @@ function setsForBlock(b) {
   if (b.perWeek) {
     const wi = (ex.currentWeek || 1) - 1;
     const wk = b.perWeek[wi] || b.perWeek[0] || { sets: [] };
-    base = (wk.sets || []).map((s) => ({ reps: s.reps, type: s.type || "work" }));
+    base = (wk.sets || []).map((s) => {
+      const o = { reps: s.reps, type: s.type || "work" };
+      if (s.restBefore != null) o.restBefore = s.restBefore; // rest-pause
+      return o;
+    });
   } else {
     base = (b.sets || []).map((s) => ({
       reps: s.targetReps != null ? s.targetReps : 8,
@@ -229,10 +233,8 @@ function repsTargetNumeric(set) {
   return Number.isFinite(n) ? n : 8;
 }
 
-/** Secondi di rest da una stringa tipo "2'30\"", "1'30\"", "0", o numero. */
-function restSecondsOf(b) {
-  if (b.restAfterSetSec != null) return b.restAfterSetSec; // vecchio formato
-  const raw = b.rest;
+/** Secondi da una stringa tipo "2'30\"", "1'30\"", "20\"", "0", o numero. */
+function parseRestSeconds(raw) {
   if (raw == null || raw === "") return 0;
   if (typeof raw === "number") return raw;
   const str = String(raw).trim();
@@ -244,6 +246,22 @@ function restSecondsOf(b) {
     return min * 60 + sec;
   }
   return 0;
+}
+
+/** Rest generale dell'esercizio (tra le serie). */
+function restSecondsOf(b) {
+  if (b.restAfterSetSec != null) return b.restAfterSetSec; // vecchio formato
+  return parseRestSeconds(b.rest);
+}
+
+/**
+ * Rest-pause "prima" di una serie: se la serie ha restBefore (es. 20" prima
+ * della MAX), quello sostituisce il rest normale nel timer che la precede.
+ * Ritorna secondi > 0 solo se la serie di destinazione ha un restBefore valido.
+ */
+function restBeforeOfSet(set) {
+  if (!set || set.restBefore == null || set.restBefore === "") return 0;
+  return parseRestSeconds(set.restBefore);
 }
 
 /** Gli altri esercizi dello stesso superset del blocco corrente (per etichetta). */
@@ -1288,9 +1306,19 @@ function advance(noRest) {
   }
 
   persist();
-  // rest: solo se la scheda lo prevede e non era uno skip
-  if (!noRest && restSec > 0) {
-    openRest(restSec, { hint: nextUpLabel() });
+  // Rest-pause: se la serie a cui stiamo arrivando ha un restBefore (es. 20"
+  // prima della MAX), quello sostituisce il rest normale dell'esercizio.
+  const destSets = setsForBlock(curBlock());
+  const destSet = destSets[ex.si];
+  const restBefore = restBeforeOfSet(destSet);
+  const effectiveRest = restBefore > 0 ? restBefore : restSec;
+
+  // rest: solo se previsto e non era uno skip
+  if (!noRest && effectiveRest > 0) {
+    openRest(effectiveRest, {
+      hint: nextUpLabel(),
+      label: restBefore > 0 ? "Rest-pause" : undefined,
+    });
   } else {
     renderExec();
   }
