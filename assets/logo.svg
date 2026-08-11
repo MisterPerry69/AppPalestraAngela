@@ -1,18 +1,18 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 72 72" fill="none">
-  <rect width="72" height="72" rx="18" fill="#13161b"/>
-  <!-- Diamante inciso -->
-  <path d="M36 8 L60 36 L36 64 L12 36 Z" stroke="#e8e9ec" stroke-width="1.4" opacity="0.5"/>
-  <path d="M36 13 L55 36 L36 59 L17 36 Z" stroke="#e8e9ec" stroke-width="1" opacity="0.28"/>
-  <!-- Incudine -->
-  <g fill="#e8e9ec">
-    <rect x="22" y="31" width="28" height="5" rx="1.2"/>
-    <path d="M20 31 q-3 0 -3 -3 l4 0 z"/>
-    <path d="M50 31 l4 -2 0 3 q0 2 -2 2 z"/>
-    <path d="M30 36 l12 0 -1.5 7 q-4 2 -9 0 z"/>
-    <rect x="32.5" y="43" width="7" height="3" rx="1"/>
-    <rect x="29" y="46" width="14" height="3" rx="1.4"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="160" height="160" role="img" aria-label="ForgE">
+  <!-- PLACEHOLDER: sostituisci questo file con il tuo logo (stesso nome: logo.svg o logo.png) -->
+  <defs>
+    <linearGradient id="fg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#e34b3a"/>
+      <stop offset="1" stop-color="#c1272d"/>
+    </linearGradient>
+  </defs>
+  <circle cx="80" cy="80" r="76" fill="none" stroke="url(#fg)" stroke-width="4"/>
+  <!-- manubrio stilizzato -->
+  <g fill="url(#fg)">
+    <rect x="52" y="74" width="56" height="12" rx="4"/>
+    <rect x="38" y="62" width="12" height="36" rx="4"/>
+    <rect x="26" y="70" width="10" height="20" rx="4"/>
+    <rect x="110" y="62" width="12" height="36" rx="4"/>
+    <rect x="124" y="70" width="10" height="20" rx="4"/>
   </g>
-  <!-- "F" blackletter sovraimpressa, accento rosso -->
-  <text x="36" y="44" text-anchor="middle" font-family="UnifrakturCook, serif"
-        font-size="22" font-weight="700" fill="#c1272d" opacity="0.92">F</text>
 </svg>
