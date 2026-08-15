@@ -51,7 +51,7 @@
   background: var(--surface-3);
   border-radius: var(--radius-pill);
   overflow: hidden;
-  border-bottom: 1px solid #0c0e11;
+  border: 1px solid #0c0e11;
 }
 
 .splash-bar-fill {
