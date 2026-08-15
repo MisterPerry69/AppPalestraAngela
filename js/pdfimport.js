@@ -65,6 +65,7 @@ function _programToHuman(prog) {
             serie: (wk.sets || []).map((s) => {
               const set = { reps: s.reps, tipo: s.type || "work" };
               if (s.restBefore != null) set.restBefore = s.restBefore;
+              if (s.nota != null && String(s.nota).trim() !== "") set.nota = s.nota;
               return set;
             }),
           };
@@ -158,6 +159,7 @@ function _normWeek(w, kind) {
       };
       const rb = s && parseInt(s.restBefore, 10);
       if (Number.isFinite(rb) && rb > 0) out.restBefore = rb;
+      if (s && s.nota != null && String(s.nota).trim() !== "") out.nota = String(s.nota).trim();
       return out;
     }),
   };
@@ -291,6 +293,8 @@ function _pdfWeekHtml(ex, wk, wi, ei, si) {
         <input class="pdf-imp-input xs" data-f="restBefore" data-wi="${wi}" data-ei="${ei}" data-si="${si}" data-ri="${ri}"
           type="number" min="0" value="${s.restBefore != null ? escapeAttr(s.restBefore) : ""}" placeholder="rest″" title="Rest-pause prima di questa serie (secondi)" />
         <button class="pdf-imp-set-del" data-wi="${wi}" data-ei="${ei}" data-si="${si}" data-ri="${ri}" type="button" title="Togli serie">−</button>
+        <input class="pdf-imp-input pdf-imp-set-nota" data-f="setnota" data-wi="${wi}" data-ei="${ei}" data-si="${si}" data-ri="${ri}"
+          value="${s.nota != null ? escapeAttr(s.nota) : ""}" placeholder="nota serie (es. mantieni il carico)" />
       </div>`
     )
     .join("");
@@ -375,6 +379,16 @@ function _wirePdfWorkouts(wrap) {
       const rb = parseInt(inp.value, 10);
       if (Number.isFinite(rb) && rb > 0) set.restBefore = rb;
       else delete set.restBefore;
+    };
+  });
+  // nota per serie
+  wrap.querySelectorAll('.pdf-imp-set input[data-f="setnota"]').forEach((inp) => {
+    inp.oninput = () => {
+      const { wi, ei, si, ri } = _idx(inp);
+      const set = P.workout[wi].esercizi[ei].perSettimana[si].serie[ri];
+      const v = inp.value.trim();
+      if (v) set.nota = v;
+      else delete set.nota;
     };
   });
   // durata / parametri

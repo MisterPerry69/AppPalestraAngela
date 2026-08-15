@@ -67,6 +67,10 @@ function parseImportSet(raw, ctx) {
     const rb = parseInt(raw.restBefore, 10);
     if (Number.isFinite(rb) && rb > 0) set.restBefore = rb;
   }
+  // nota specifica di questa serie (es. "mantieni il carico" solo sull'ultima)
+  if (raw.nota != null && String(raw.nota).trim() !== "") {
+    set.nota = String(raw.nota).trim();
+  }
   return set;
 }
 
