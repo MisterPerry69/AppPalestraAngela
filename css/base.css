@@ -8,6 +8,8 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  /* iOS: niente double-tap-zoom su NESSUN elemento (i tap ripetuti restano reattivi) */
+  touch-action: manipulation;
 }
 
 /* L'attributo [hidden] deve sempre vincere su display di classe (es. .hero-card flex). */
@@ -29,6 +31,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior-y: none;
+  /* niente double-tap-zoom su iOS: i tap ripetuti (es. +peso) restano reattivi */
+  touch-action: manipulation;
   /* niente selezione testo: è un'app, non una pagina da copiare */
   -webkit-user-select: none;
   user-select: none;
@@ -114,7 +118,13 @@ ul {
 /* Screen transitions */
 .screen {
   flex: 1;
-  padding: var(--sp-5) var(--sp-4) var(--sp-7);
+  /* status-bar-style:black → fascia sistema separata in alto: padding fisso top.
+     Lati + basso con safe-area (notch laterali / home-bar). */
+  padding:
+    var(--sp-5)
+    calc(var(--sp-4) + env(safe-area-inset-right))
+    calc(var(--sp-7) + env(safe-area-inset-bottom))
+    calc(var(--sp-4) + env(safe-area-inset-left));
   display: none;
   animation: screenIn var(--t-base) both;
 }

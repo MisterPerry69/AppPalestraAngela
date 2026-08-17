@@ -138,7 +138,39 @@ function showScreen(id) {
   if (screens[id]) screens[id].classList.add("active");
 }
 
+/**
+ * Blocca lo zoom su iOS (double-tap e pinch). Necessario perché nella PWA
+ * installata iOS IGNORA user-scalable=no nel meta viewport. Va fatto in JS.
+ * IMPORTANTE: non blocca i tap sui controlli (button/input): quelli hanno già
+ * touch-action:manipulation, e un doppio-tap su un bottone deve restare un
+ * doppio click, non essere annullato.
+ */
+function _preventIOSZoom() {
+  // pinch-zoom (gesture Safari): sempre bloccato
+  ["gesturestart", "gesturechange", "gestureend"].forEach((ev) =>
+    document.addEventListener(ev, (e) => e.preventDefault(), { passive: false })
+  );
+  // double-tap zoom: due touchend ravvicinati (< 300ms). Prevengo il default
+  // SOLO se il tap NON è su un controllo interattivo (così i bottoni +peso
+  // restano cliccabili in rapida successione).
+  let lastTouch = 0;
+  document.addEventListener(
+    "touchend",
+    (e) => {
+      const now = Date.now();
+      const onControl =
+        e.target &&
+        e.target.closest &&
+        e.target.closest("button, input, select, textarea, a, label");
+      if (now - lastTouch <= 300 && !onControl) e.preventDefault();
+      lastTouch = now;
+    },
+    { passive: false }
+  );
+}
+
 async function boot() {
+  _preventIOSZoom();
   splashStart();
 
   screens.home = document.getElementById("screen-home");

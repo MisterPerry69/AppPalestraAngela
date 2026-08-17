@@ -6,7 +6,8 @@
   padding: 0;
   display: none;
   flex-direction: column;
-  min-height: 100vh;
+  min-height: 100vh;   /* fallback browser vecchi */
+  min-height: 100dvh;  /* iOS: altezza reale del viewport, niente taglio/scroll spurio */
   animation: none; /* no screen-in for exec, loads fast */
 }
 #screen-exec.active {
@@ -18,9 +19,18 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: var(--sp-4) var(--sp-4);
+  /* status-bar-style:black → la fascia sistema è già separata: padding fisso
+     in alto (niente safe-area-top, che darebbe doppio spazio). Lati per notch. */
+  padding:
+    var(--sp-4)
+    calc(var(--sp-4) + env(safe-area-inset-right))
+    var(--sp-4)
+    calc(var(--sp-4) + env(safe-area-inset-left));
   border-bottom: 1px solid var(--border-soft);
   background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .exec-header .eh-name {
@@ -83,7 +93,11 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-4);
-  padding: var(--sp-5) var(--sp-4) var(--sp-6);
+  padding:
+    var(--sp-5)
+    calc(var(--sp-4) + env(safe-area-inset-right))
+    calc(var(--sp-6) + env(safe-area-inset-bottom))
+    calc(var(--sp-4) + env(safe-area-inset-left));
   text-align: center;
   min-height: 0;
 }
@@ -113,6 +127,64 @@
   line-height: 1.45;
   max-width: 320px;
   margin: var(--sp-2) auto 0;
+}
+
+/* Nota personale (promemoria persistente): riquadro accent, in alto */
+.exec-nota-personale {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 6px;
+  text-align: left;
+  font-size: var(--fs-small);
+  line-height: 1.4;
+  color: var(--accent);
+  background: var(--accent-ghost);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  max-width: 320px;
+  margin: var(--sp-2) auto 0;
+}
+.exec-nota-personale svg,
+.exec-nota-personale .icon { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; }
+
+/* Nota della serie corrente: sopra i controlli, ben visibile */
+.exec-nota-serie {
+  font-size: var(--fs-small);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--gold);
+  background: var(--gold-ghost);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  margin: var(--sp-2) 0;
+}
+
+/* Nell'editor nota personale: nota attuale con X per cancellarla */
+.note-current {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+  background: var(--surface-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-2) var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+.note-current-txt {
+  font-size: var(--fs-small);
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.note-current-del {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background: var(--danger-ghost);
+  color: var(--danger);
+  font-size: 0.9rem;
+  line-height: 1;
 }
 
 /* Stato superset */
@@ -227,6 +299,7 @@
 .ov-list {
   overflow-y: auto;
   padding: var(--sp-2);
+  padding-bottom: calc(var(--sp-2) + env(safe-area-inset-bottom));
 }
 .ov-item {
   width: 100%;
@@ -390,6 +463,29 @@
   transition: opacity var(--t-fast);
 }
 .exec-skip:active { opacity: 0.7; }
+
+/* Salta esercizio: tasto rosso riquadrato, in fondo, ben separato dai controlli
+   serie e dalla X di "termina" in alto. Non è un tasto primario. */
+.exec-skip-block {
+  display: block;
+  width: 100%;
+  margin-top: var(--sp-6);
+  padding: var(--sp-3);
+  background: transparent;
+  color: var(--danger);
+  border: 1.5px solid var(--danger);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  transition: background var(--t-fast), transform var(--t-fast);
+}
+.exec-skip-block:active {
+  background: var(--danger-ghost);
+  transform: scale(0.98);
+}
 .exec-addset {
   color: var(--text-dim-2);
   font-size: var(--fs-small);
@@ -517,7 +613,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius) var(--radius) 0 0;
-  padding: var(--sp-5) var(--sp-5) var(--sp-7);
+  padding: var(--sp-5) var(--sp-5) calc(var(--sp-7) + env(safe-area-inset-bottom));
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
@@ -623,7 +719,7 @@
 /* Undo toast */
 .toast {
   position: fixed;
-  bottom: var(--sp-6);
+  bottom: calc(var(--sp-6) + env(safe-area-inset-bottom));
   left: 50%;
   transform: translateX(-50%);
   background: var(--surface-3);
@@ -785,6 +881,14 @@
   letter-spacing: 0.04em;
   font-size: 0.6rem;
   color: #3fae5a;
+  margin-left: var(--sp-2);
+}
+.ov-skipped {
+  font-family: var(--font-cond);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: 0.6rem;
+  color: var(--danger);
   margin-left: var(--sp-2);
 }
 .ov-add {
