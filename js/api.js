@@ -8,7 +8,7 @@ const USE_MOCK = false; // TODO: false quando il backend GAS e pronto
 // GAS_URL vive in js/config.js (per-istanza). Fallback per sicurezza.
 const GAS_URL =
   (typeof FORGE_CONFIG !== "undefined" && FORGE_CONFIG.GAS_URL) ||
-  "https://script.google.com/macros/s/AKfycbxEmaLFKUy6UEdzPxo6Q4WepPyX9VfVWag2J1ATfSLeZ4MRqnRjcqdRVr6caYmZQy5hPg/exec";
+  "https://script.google.com/macros/s/AKfycbwjlns1fPiARx6jVA_5INxyfdfDeMNR3fUIdsiA_8MblMdY3DEXBi7PlA4flHqs1pQuIg/exec";
 
 // GAS risponde con un redirect a googleusercontent: il Content-Type finale
 // non e sempre application/json, quindi parsiamo come testo e poi JSON.parse.
@@ -58,6 +58,8 @@ const LOADING_MSG = {
   lift_save_session: "Salvo la sessione…",
   lift_log_weight: "Salvo il peso…",
   lift_get_stats: "Carico le statistiche…",
+  lift_get_pr_stats: "Calcolo i progressi…",
+  lift_get_month_report: "Preparo il report…",
   lift_get_exercise_trend: "Carico il trend…",
   lift_save_custom_exercise: "Salvo l'esercizio…",
   lift_generate_session_feedback: "Analisi in corso…",

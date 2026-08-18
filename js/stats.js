@@ -1,10 +1,8 @@
 /* ============================================
-   LIFT — Statistiche (3 viste: frequenza / PR / trend)
+   LIFT — Statistiche (3 tab: Report / PR / Peso)
    ============================================ */
 
-let _statsData = null;
 let _chartLoaded = false;
-let _trendChart = null;
 
 async function openStats() {
   showScreen("stats");
@@ -18,15 +16,13 @@ async function openStats() {
     </div>
 
     <div class="stats-tabs">
-      <button class="stats-tab active" data-tab="freq">Frequenza</button>
+      <button class="stats-tab active" data-tab="report">Report</button>
       <button class="stats-tab" data-tab="pr">PR</button>
-      <button class="stats-tab" data-tab="trend">Trend</button>
       <button class="stats-tab" data-tab="weight">Peso</button>
     </div>
 
-    <div id="view-freq" class="stats-view active"></div>
+    <div id="view-report" class="stats-view active"></div>
     <div id="view-pr" class="stats-view"></div>
-    <div id="view-trend" class="stats-view"></div>
     <div id="view-weight" class="stats-view"></div>
   `;
 
@@ -35,19 +31,14 @@ async function openStats() {
     b.onclick = () => _switchTab(b.dataset.tab);
   });
 
-  // Carico i dati una volta, le 3 viste leggono da qui
-  try {
-    _statsData = await apiPost("lift_get_stats", {});
-  } catch (e) {
-    document.getElementById("view-freq").innerHTML =
-      '<div class="empty-state">Errore: ' + escapeHtml(e.message || e) + "</div>";
-    return;
-  }
-  _renderFreq();
-  _renderPRs();
-  _renderTrend(); // setup picker subito, chart al primo trigger
-  _renderWeight(); // render placeholder, chart al primo switch
+  // Tab di default: Report. Le viste caricano i propri dati al primo accesso.
+  _drawReport(); // mese corrente
+  _reportLoaded = true;
 }
+
+let _prLoaded = false;
+let _weightLoaded = false;
+let _reportLoaded = false;
 
 function _switchTab(name) {
   document.querySelectorAll(".stats-tab").forEach((b) =>
@@ -56,158 +47,19 @@ function _switchTab(name) {
   document.querySelectorAll(".stats-view").forEach((v) =>
     v.classList.toggle("active", v.id === "view-" + name)
   );
-  if (name === "trend" && document.getElementById("trend-picker")) {
-    const sel = document.getElementById("trend-picker");
-    if (sel.value) _drawTrendChart(sel.value);
+  if (name === "report" && !_reportLoaded) {
+    _drawReport();
+    _reportLoaded = true;
   }
-  if (name === "weight") {
+  if (name === "pr" && !_prLoaded) {
+    _drawPr();
+    _prLoaded = true;
+  }
+  if (name === "weight" && !_weightLoaded) {
+    _renderWeight(); // crea canvas + summary vuoti
     _drawWeightChart();
+    _weightLoaded = true;
   }
-}
-
-/* ---------- VISTA 1: FREQUENZA (heatmap 12 settimane) ---------- */
-
-function _renderFreq() {
-  const v = document.getElementById("view-freq");
-  const freq = (_statsData && _statsData.frequency) || {};
-
-  // 12 settimane = 84 giorni, da oggi indietro
-  const weeks = 12;
-  const totalDays = weeks * 7;
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  // allineo a domenica (per riempire colonne settimanali)
-  const lastDow = today.getDay();
-  const end = new Date(today);
-  end.setDate(today.getDate() + (6 - lastDow)); // sabato prossimo
-
-  // calcolo i counts massimi per colorare i livelli
-  const counts = Object.values(freq);
-  const max = counts.length ? Math.max.apply(null, counts) : 0;
-  const lvl = (n) => {
-    if (!n) return 0;
-    if (max <= 1) return 4;
-    if (n >= max * 0.75) return 4;
-    if (n >= max * 0.5) return 3;
-    if (n >= max * 0.25) return 2;
-    return 1;
-  };
-
-  const cells = [];
-  let totSessions = 0;
-  let totSets = 0;
-  const sessionDays = new Set();
-  for (let i = totalDays - 1; i >= 0; i--) {
-    const d = new Date(end);
-    d.setDate(end.getDate() - i);
-    const key =
-      d.getFullYear() +
-      "-" +
-      String(d.getMonth() + 1).padStart(2, "0") +
-      "-" +
-      String(d.getDate()).padStart(2, "0");
-    const n = freq[key] || 0;
-    if (n > 0) {
-      sessionDays.add(key);
-      totSets += n;
-    }
-    const tomorrow = d > today;
-    cells.push(
-      `<div class="hm-cell" data-level="${tomorrow ? 0 : lvl(n)}" title="${key} · ${n} set"></div>`
-    );
-  }
-  totSessions = sessionDays.size;
-
-  v.innerHTML = `
-    <div class="heatmap-wrap">
-      <div class="heatmap">${cells.join("")}</div>
-    </div>
-    <div class="heatmap-legend">
-      <span>Poco</span>
-      <span class="hm-cell" data-level="1"></span>
-      <span class="hm-cell" data-level="2"></span>
-      <span class="hm-cell" data-level="3"></span>
-      <span class="hm-cell" data-level="4"></span>
-      <span>Tanto</span>
-    </div>
-    <div class="stats-summary">
-      <div class="stats-card"><div class="v">${totSessions}</div><div class="l">giorni allenati</div></div>
-      <div class="stats-card"><div class="v">${totSets}</div><div class="l">set totali</div></div>
-      <div class="stats-card"><div class="v">${weeks}w</div><div class="l">periodo</div></div>
-    </div>
-  `;
-}
-
-/* ---------- VISTA 2: PR ---------- */
-
-const PR_TYPE_LABEL = {
-  "1rm": "1RM stimato",
-  volume: "Volume sessione",
-  heaviest: "Peso piu alto",
-};
-
-function _renderPRs() {
-  const v = document.getElementById("view-pr");
-  const prs = (_statsData && _statsData.prs) || [];
-  if (prs.length === 0) {
-    v.innerHTML = `<div class="empty-state">Nessun PR registrato ancora.</div>`;
-    return;
-  }
-  // raggruppo per exerciseRef
-  const byEx = {};
-  prs.forEach((p) => {
-    if (!byEx[p.exerciseRef]) byEx[p.exerciseRef] = { name: p.exerciseName, items: [] };
-    byEx[p.exerciseRef].items.push(p);
-  });
-  // ordino i gruppi per data PR piu recente
-  const groups = Object.values(byEx).sort((a, b) => {
-    const aMax = Math.max.apply(null, a.items.map((x) => +new Date(x.date) || 0));
-    const bMax = Math.max.apply(null, b.items.map((x) => +new Date(x.date) || 0));
-    return bMax - aMax;
-  });
-  v.innerHTML = groups
-    .map(
-      (g) => `
-      <div class="pr-group">
-        <div class="pr-group-name">${escapeHtml(g.name)}</div>
-        ${g.items
-          .map(
-            (p) => `
-          <div class="pr-row">
-            <span class="pr-type">${PR_TYPE_LABEL[p.prType] || p.prType}</span>
-            <span class="pr-val">${p.value}${p.prType === "heaviest" ? " kg" : ""}</span>
-            <span class="pr-date">${_fmtShortDate(p.date)}</span>
-          </div>`
-          )
-          .join("")}
-      </div>`
-    )
-    .join("");
-}
-
-/* ---------- VISTA 3: TREND su singolo esercizio ---------- */
-
-function _renderTrend() {
-  const v = document.getElementById("view-trend");
-  const list = (_statsData && _statsData.exercises) || [];
-  if (list.length === 0) {
-    v.innerHTML = `<div class="empty-state">Nessun esercizio registrato ancora.</div>`;
-    return;
-  }
-  v.innerHTML = `
-    <select class="trend-picker" id="trend-picker">
-      ${list
-        .map(
-          (e) => `<option value="${escapeHtml(e.ref)}">${escapeHtml(e.name)}</option>`
-        )
-        .join("")}
-    </select>
-    <div class="trend-chart-wrap">
-      <canvas id="trend-canvas"></canvas>
-    </div>
-  `;
-  document.getElementById("trend-picker").onchange = (e) =>
-    _drawTrendChart(e.target.value);
 }
 
 async function _loadChartJs() {
@@ -230,12 +82,69 @@ let _weightChart = null;
 
 function _renderWeight() {
   const v = document.getElementById("view-weight");
+  // grafico SOPRA, card SOTTO
   v.innerHTML = `
-    <div id="weight-summary" class="stats-summary stats-summary--top"></div>
     <div class="trend-chart-wrap">
       <canvas id="weight-canvas"></canvas>
     </div>
+    <div id="weight-summary" class="stats-summary stats-summary--top"></div>
   `;
+}
+
+/**
+ * Media peso di una settimana (lun-dom) `weeksAgo` settimane fa rispetto a oggi.
+ * weeksAgo=1 → settimana scorsa completa; =2 → quella prima.
+ * Ritorna { avg, from, to, count } o null se nessuna pesata in quella settimana.
+ */
+function _weeklyAvg(log, weeksAgo) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  // lunedì della settimana CORRENTE
+  const dow = today.getDay(); // 0=dom
+  const offToMon = dow === 0 ? 6 : dow - 1;
+  const monThis = new Date(today);
+  monThis.setDate(today.getDate() - offToMon);
+  // lunedì e domenica della settimana target
+  const from = new Date(monThis);
+  from.setDate(monThis.getDate() - 7 * weeksAgo);
+  const to = new Date(from);
+  to.setDate(from.getDate() + 6);
+  to.setHours(23, 59, 59, 999);
+
+  const inWeek = log.filter((p) => {
+    const d = new Date(p.date);
+    d.setHours(12, 0, 0, 0);
+    return d >= from && d <= to;
+  });
+  if (inWeek.length === 0) return null;
+  const avg = inWeek.reduce((s, p) => s + p.weight, 0) / inWeek.length;
+  return { avg: avg, from: from, to: to, count: inWeek.length };
+}
+
+/** Card "media sett. scorsa" — informativa, senza semaforo (il colore è su "attuale"). */
+function _weightAvgCardHtml(lastWeek) {
+  if (!lastWeek) {
+    return `<div class="stats-card stats-card--wide">
+      <div class="v">—</div>
+      <div class="l">media sett. scorsa</div>
+    </div>`;
+  }
+  const fmt = (d) =>
+    d.toLocaleDateString("it-IT", { day: "numeric", month: "short" });
+  const range = `${fmt(lastWeek.from)}–${fmt(lastWeek.to)}`;
+  return `<div class="stats-card stats-card--wide">
+    <div class="v">${lastWeek.avg.toFixed(1)}</div>
+    <div class="l">media sett. scorsa · ${range}</div>
+  </div>`;
+}
+
+/** Classe semaforo del PESO ATTUALE vs media sett. scorsa. */
+function _currentWeightCls(current, lastWeek) {
+  if (!lastWeek) return "wavg-neutral";
+  const diff = current - lastWeek.avg;
+  if (diff <= 0.3) return "wavg-good";
+  if (diff <= 1.0) return "wavg-warn";
+  return "wavg-bad";
 }
 
 async function _drawWeightChart() {
@@ -258,11 +167,18 @@ async function _drawWeightChart() {
   const current = log[log.length - 1].weight;
   const min = Math.min.apply(null, log.map((p) => p.weight));
   const max = Math.max.apply(null, log.map((p) => p.weight));
+
+  // Media settimana scorsa completa (lun-dom); il semaforo va sul PESO ATTUALE
+  const lastWeek = _weeklyAvg(log, 1); // {avg, from, to, count} o null
+  const avgCardHtml = _weightAvgCardHtml(lastWeek);
+  const curCls = _currentWeightCls(current, lastWeek);
+
   if (sum)
     sum.innerHTML = `
-      <div class="stats-card"><div class="v">${current.toFixed(1)}</div><div class="l">attuale kg</div></div>
+      <div class="stats-card wavg ${curCls}"><div class="v">${current.toFixed(1)}</div><div class="l">attuale kg</div></div>
       <div class="stats-card"><div class="v">${min.toFixed(1)}</div><div class="l">min kg</div></div>
       <div class="stats-card"><div class="v">${max.toFixed(1)}</div><div class="l">max kg</div></div>
+      ${avgCardHtml}
     `;
 
   const ctx = document.getElementById("weight-canvas");
@@ -307,56 +223,317 @@ async function _drawWeightChart() {
   });
 }
 
-async function _drawTrendChart(ref) {
-  await _loadChartJs();
-  let res;
+/* ============================================
+   VISTA: PR (2 sezioni)
+   1) top miglioramenti globali (peso / volume / 1RM)
+   2) per gruppo muscolare: top 3 esercizi migliorati di peso
+   ============================================ */
+
+const _MACRO_ORDER = ["Schiena", "Petto", "Gambe", "Spalle", "Braccia", "Addome"];
+
+/** Peso "pulito": niente decimali se intero, altrimenti fino a 1 decimale (72, 22.5). */
+function _kg(n) {
+  const v = Math.round((parseFloat(n) || 0) * 10) / 10;
+  return Number.isInteger(v) ? String(v) : v.toFixed(1);
+}
+
+async function _drawPr() {
+  const v = document.getElementById("view-pr");
+  v.innerHTML = `<div class="empty-state">Calcolo i progressi…</div>`;
+  let data;
   try {
-    res = await apiPost("lift_get_exercise_trend", { exerciseRef: ref });
+    data = await apiPost("lift_get_pr_stats", {});
   } catch (e) {
+    v.innerHTML = `<div class="empty-state">Errore: ${escapeHtml(e.message || e)}</div>`;
     return;
   }
-  const points = (res && res.points) || [];
-  const ctx = document.getElementById("trend-canvas");
-  if (!ctx) return;
-  if (_trendChart) _trendChart.destroy();
-  _trendChart = new window.Chart(ctx, {
-    type: "line",
+  if (!data || data.status !== "OK") {
+    v.innerHTML = `<div class="empty-state">Nessun dato PR.</div>`;
+    return;
+  }
+  // solo esercizi con un confronto reale (non "nuovi")
+  const ex = (data.perEsercizio || []).filter((e) => !e.nuovo);
+
+  v.innerHTML = `
+    <div class="pr-period">Ultimo mese vs mese precedente</div>
+    ${_prTopGlobalHtml(ex)}
+    ${_prByGroupHtml(ex)}
+  `;
+}
+
+/** Sezione 1: 3 card, miglior salto per peso / volume / 1RM. */
+function _prTopGlobalHtml(ex) {
+  const bestBy = (key) => {
+    let best = null;
+    ex.forEach((e) => {
+      if (e.delta[key] > 0 && (!best || e.delta[key] > best.delta[key])) best = e;
+    });
+    return best;
+  };
+  const bestVolPct = () => {
+    let best = null;
+    ex.forEach((e) => {
+      if (e.deltaPct.volume > 0 && (!best || e.deltaPct.volume > best.deltaPct.volume))
+        best = e;
+    });
+    return best;
+  };
+
+  const peso = bestBy("pesoMax");
+  const vol = bestVolPct();
+  const rm = bestBy("oneRM");
+
+  const card = (kicker, e, valTxt, subTxt) => {
+    if (!e)
+      return `<div class="pr-top-card pr-top-empty">
+        <div class="pr-top-kicker">${kicker}</div>
+        <div class="pr-top-none">nessun miglioramento questo mese</div>
+      </div>`;
+    return `<div class="pr-top-card">
+      <div class="pr-top-kicker">${kicker}</div>
+      <div class="pr-top-val">${valTxt}</div>
+      <div class="pr-top-ex">${escapeHtml(e.name)}</div>
+      <div class="pr-top-sub">${subTxt}</div>
+    </div>`;
+  };
+
+  return `
+    <div class="section-label label-micro pr-sec-label">Top miglioramenti</div>
+    <div class="pr-top-grid">
+      ${card("Peso max", peso, peso ? `+${_kg(peso.delta.pesoMax)} kg` : "",
+        peso ? `${_kg(peso.prev.pesoMax)}→${_kg(peso.cur.pesoMax)} kg` : "")}
+      ${card("Volume", vol, vol ? `+${vol.deltaPct.volume.toFixed(0)}%` : "",
+        vol ? `${Math.round(vol.cur.volume)} kg tot` : "")}
+      ${card("1RM stimato", rm, rm ? `+${_kg(rm.delta.oneRM)} kg` : "",
+        rm ? `${_kg(rm.prev.oneRM)}→${_kg(rm.cur.oneRM)} kg` : "")}
+    </div>`;
+}
+
+/**
+ * "Guadagno" di un esercizio secondo la sua metrica:
+ * peso → delta.pesoMax (kg); reps → delta.repsMax (ripetizioni).
+ * Gli esercizi a corpo libero (addome) usano le reps, quelli con carico il peso.
+ */
+function _prGain(e) {
+  return e.metrica === "reps" ? e.delta.repsMax : e.delta.pesoMax;
+}
+
+/** Riga "Prev → Cur unità +delta" secondo la metrica dell'esercizio. */
+function _prGroupRowHtml(e) {
+  let detail;
+  if (e.metrica === "reps") {
+    detail = `${e.prev.repsMax} → ${e.cur.repsMax} reps <strong>+${e.delta.repsMax}</strong>`;
+  } else {
+    detail = `${_kg(e.prev.pesoMax)} → ${_kg(e.cur.pesoMax)} kg <strong>+${_kg(e.delta.pesoMax)}</strong>`;
+  }
+  return `
+        <div class="pr-grp-row">
+          <span class="pr-grp-ex">${escapeHtml(e.name)}</span>
+          <span class="pr-grp-val">${detail}</span>
+        </div>`;
+}
+
+/** Sezione 2: un blocco per macro, top 3 esercizi migliorati (peso o reps). */
+function _prByGroupHtml(ex) {
+  const blocks = _MACRO_ORDER.map((macro) => {
+    const top3 = ex
+      .filter((e) => e.macro === macro && _prGain(e) > 0)
+      .sort((a, b) => _prGain(b) - _prGain(a))
+      .slice(0, 3);
+    const rows = top3.length
+      ? top3.map(_prGroupRowHtml).join("")
+      : `<div class="pr-grp-row pr-grp-empty">nessun progresso questo mese</div>`;
+    return `
+      <div class="pr-grp">
+        <div class="pr-grp-name">${macro}</div>
+        ${rows}
+      </div>`;
+  });
+  return `
+    <div class="section-label label-micro pr-sec-label">Per gruppo muscolare</div>
+    ${blocks.join("")}`;
+}
+
+/* ============================================
+   VISTA: REPORT MENSILE (Hevy-style)
+   4 card con delta + radar 6 macro + calendario + navigazione mese
+   ============================================ */
+
+let _reportChart = null;
+let _reportMese = null; // "YYYY-MM" attualmente mostrato
+
+/** "YYYY-MM" del mese corrente. */
+function _thisYm() {
+  const d = new Date();
+  return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0");
+}
+
+/** "YYYY-MM" ± n mesi. */
+function _shiftYm(ym, delta) {
+  const m = String(ym).match(/^(\d{4})-(\d{2})$/);
+  if (!m) return ym;
+  let y = parseInt(m[1], 10);
+  let mo = parseInt(m[2], 10) - 1 + delta;
+  y += Math.floor(mo / 12);
+  mo = ((mo % 12) + 12) % 12;
+  return y + "-" + String(mo + 1).padStart(2, "0");
+}
+
+/** Etichetta leggibile "Agosto 2026" da "YYYY-MM". */
+function _ymLabel(ym) {
+  const m = String(ym).match(/^(\d{4})-(\d{2})$/);
+  if (!m) return ym;
+  const d = new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, 1);
+  const s = d.toLocaleDateString("it-IT", { month: "long", year: "numeric" });
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+async function _drawReport(mese) {
+  await _loadChartJs();
+  _reportMese = mese || _reportMese || _thisYm();
+  const v = document.getElementById("view-report");
+  let data;
+  try {
+    data = await apiPost("lift_get_month_report", { mese: _reportMese });
+  } catch (e) {
+    v.innerHTML = `<div class="empty-state">Errore: ${escapeHtml(e.message || e)}</div>`;
+    return;
+  }
+  if (!data || data.status !== "OK") {
+    v.innerHTML = `<div class="empty-state">Nessun dato report.</div>`;
+    return;
+  }
+
+  const isCurrent = _reportMese >= _thisYm();
+  v.innerHTML = `
+    <div class="rep-nav">
+      <button class="rep-nav-btn" id="rep-prev" aria-label="Mese precedente">‹</button>
+      <div class="rep-nav-title">${_ymLabel(_reportMese)}</div>
+      <button class="rep-nav-btn" id="rep-next" aria-label="Mese successivo" ${isCurrent ? "disabled" : ""}>›</button>
+    </div>
+
+    <div class="rep-streak">🔥 <strong>${data.streakWeeks || 0}</strong> ${
+    (data.streakWeeks || 0) === 1 ? "settimana" : "settimane"
+  } di fila</div>
+
+    <div class="rep-cards">
+      ${_repCard("Allenamenti", data.tot.allenamenti, data.prec.allenamenti, data.hasPrev, "")}
+      ${_repCard("Durata", Math.round(data.tot.durataSec / 60), Math.round(data.prec.durataSec / 60), data.hasPrev, "min")}
+      ${_repCard("Volume", data.tot.volume, data.prec.volume, data.hasPrev, "kg")}
+      ${_repCard("Serie", data.tot.serie, data.prec.serie, data.hasPrev, "")}
+    </div>
+
+    <div class="section-label label-micro rep-sec-label">Distribuzione muscoli</div>
+    <div class="rep-radar-wrap"><canvas id="report-radar"></canvas></div>
+
+    <div class="section-label label-micro rep-sec-label">Giorni allenati</div>
+    ${_repCalendarHtml(_reportMese, data.giorniAllenati || [])}
+  `;
+
+  document.getElementById("rep-prev").onclick = () =>
+    _drawReport(_shiftYm(_reportMese, -1));
+  const nextBtn = document.getElementById("rep-next");
+  if (nextBtn && !isCurrent)
+    nextBtn.onclick = () => _drawReport(_shiftYm(_reportMese, 1));
+
+  _drawReportRadar(data.radar);
+}
+
+/** Card con valore + delta vs mese precedente. */
+function _repCard(label, cur, prev, hasPrev, unit) {
+  cur = cur || 0;
+  prev = prev || 0;
+  const u = unit ? " " + unit : "";
+  let deltaHtml = "";
+  if (hasPrev) {
+    const d = cur - prev;
+    if (d === 0) {
+      deltaHtml = `<div class="rep-delta rep-delta-flat">=</div>`;
+    } else {
+      const up = d > 0;
+      deltaHtml = `<div class="rep-delta ${up ? "rep-delta-up" : "rep-delta-down"}">${
+        up ? "↑" : "↓"
+      } ${Math.abs(d)}${u}</div>`;
+    }
+  }
+  return `<div class="rep-card">
+    <div class="rep-card-lab">${label}</div>
+    <div class="rep-card-val">${cur}${u}</div>
+    ${deltaHtml}
+  </div>`;
+}
+
+/** Radar 6 macro: mese corrente vs precedente. */
+function _drawReportRadar(radar) {
+  const ctx = document.getElementById("report-radar");
+  if (!ctx || !radar) return;
+  if (_reportChart) _reportChart.destroy();
+  const accent =
+    getComputedStyle(document.body).getPropertyValue("--accent").trim() || "#4ade80";
+  _reportChart = new window.Chart(ctx, {
+    type: "radar",
     data: {
-      labels: points.map((p) =>
-        new Date(p.date).toLocaleDateString("it-IT", {
-          day: "2-digit",
-          month: "short",
-        })
-      ),
+      labels: radar.labels,
       datasets: [
         {
-          label: "Peso top set (kg)",
-          data: points.map((p) => p.weight),
-          borderColor: getComputedStyle(document.body)
-            .getPropertyValue("--accent")
-            .trim() || "#4ade80",
+          label: "Mese prec.",
+          data: radar.prev,
+          borderColor: "rgba(154,163,173,0.6)",
+          backgroundColor: "rgba(154,163,173,0.12)",
+          pointRadius: 2,
+        },
+        {
+          label: "Questo mese",
+          data: radar.cur,
+          borderColor: accent,
           backgroundColor: "rgba(74,222,128,0.18)",
-          tension: 0.25,
-          fill: true,
-          pointRadius: 3,
+          pointRadius: 2,
         },
       ],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
+      plugins: { legend: { labels: { color: "#9aa3ad", font: { size: 11 } } } },
       scales: {
-        x: {
-          ticks: { color: "#9aa3ad", font: { size: 10 } },
-          grid: { color: "rgba(255,255,255,0.04)" },
-        },
-        y: {
-          ticks: { color: "#9aa3ad", font: { size: 10 } },
-          grid: { color: "rgba(255,255,255,0.06)" },
-          beginAtZero: false,
+        r: {
+          angleLines: { color: "rgba(255,255,255,0.08)" },
+          grid: { color: "rgba(255,255,255,0.08)" },
+          pointLabels: { color: "#c8ccd2", font: { size: 11 } },
+          ticks: { display: false, beginAtZero: true },
         },
       },
     },
   });
+}
+
+/** Griglia calendario del mese con i giorni allenati evidenziati. */
+function _repCalendarHtml(ym, giorni) {
+  const m = String(ym).match(/^(\d{4})-(\d{2})$/);
+  if (!m) return "";
+  const year = parseInt(m[1], 10);
+  const month = parseInt(m[2], 10) - 1; // 0-based
+  const done = new Set(giorni); // "YYYY-MM-DD"
+  const first = new Date(year, month, 1);
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  // offset lunedì
+  const fdow = first.getDay(); // 0=dom
+  const offset = fdow === 0 ? 6 : fdow - 1;
+
+  const head = ["Lun", "Mar", "Mer", "Gio", "Ven", "Sab", "Dom"]
+    .map((d) => `<div class="rep-cal-h">${d}</div>`)
+    .join("");
+
+  const cells = [];
+  for (let i = 0; i < offset; i++) cells.push(`<div class="rep-cal-cell rep-cal-empty"></div>`);
+  for (let day = 1; day <= daysInMonth; day++) {
+    const key =
+      year + "-" + String(month + 1).padStart(2, "0") + "-" + String(day).padStart(2, "0");
+    const on = done.has(key) ? " rep-cal-on" : "";
+    cells.push(`<div class="rep-cal-cell${on}">${day}</div>`);
+  }
+  return `<div class="rep-cal">
+    <div class="rep-cal-head">${head}</div>
+    <div class="rep-cal-grid">${cells.join("")}</div>
+  </div>`;
 }
