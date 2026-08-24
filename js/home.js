@@ -4,7 +4,7 @@
 
 const GREETINGS = [
   "Ciao, {name}",
-  "È ora di allenarsi, {name}.",
+  "È ora di allenarsi, {nome}.",
   "Pronta, {name}?",
   "Bentornata, {name}",
   "Pronta a spaccar tutto, {name}?",
@@ -82,6 +82,10 @@ async function renderHome() {
   if (data.exercises) EXERCISES_CATALOG = data.exercises;
 
   renderWeekBar(data.recentSessions || []);
+
+  // Rete di sicurezza: se esiste una sessione attiva non ripresa (es. la ripresa
+  // automatica al boot non è scattata), mostro un banner per recuperarla.
+  _renderResumeBanner();
 
   // Saluto
   document.getElementById("home-greeting").textContent = randomGreeting(
@@ -292,6 +296,30 @@ function openWeekPicker(p) {
     await renderHome();
   };
   m.classList.add("show");
+}
+
+/** Banner "Riprendi allenamento" in home: rete di sicurezza per sessioni
+ *  attive non riprese automaticamente. Le funzioni hasActiveSession /
+ *  activeSessionName / resumeSessionIfAny vivono in exec.js. */
+function _renderResumeBanner() {
+  const el = document.getElementById("resume-banner");
+  if (!el) return;
+  if (typeof hasActiveSession !== "function" || !hasActiveSession()) {
+    el.hidden = true;
+    el.innerHTML = "";
+    return;
+  }
+  const nome = typeof activeSessionName === "function" ? activeSessionName() : "";
+  el.hidden = false;
+  el.innerHTML = `
+    <div class="resume-banner-txt">
+      <strong>Allenamento in corso</strong>
+      <span>${escapeHtml(nome)}</span>
+    </div>
+    <button class="resume-banner-btn" id="resume-banner-go">Riprendi</button>
+  `;
+  const btn = document.getElementById("resume-banner-go");
+  if (btn) btn.onclick = () => resumeSessionIfAny();
 }
 
 // startSession() / startProgramWorkout() vivono in exec.js
