@@ -87,6 +87,9 @@ async function renderHome() {
   // automatica al boot non è scattata), mostro un banner per recuperarla.
   _renderResumeBanner();
 
+  // Banner report mensile: nella prima settimana del mese, se non ancora aperto.
+  _renderReportBanner();
+
   // Saluto
   document.getElementById("home-greeting").textContent = randomGreeting(
     profile.name
@@ -320,6 +323,59 @@ function _renderResumeBanner() {
   `;
   const btn = document.getElementById("resume-banner-go");
   if (btn) btn.onclick = () => resumeSessionIfAny();
+}
+
+/** Banner "Report di [mese] pronto" nei primi 7 giorni del mese. Resta finché
+ *  non apri il report (poi lo segno visto in localStorage per non ri-mostrarlo).
+ *  Decisione tutta frontend: non dipende dal backend, così è robusto. */
+function _renderReportBanner() {
+  const el = document.getElementById("report-banner");
+  if (!el) return;
+  el.hidden = true;
+
+  // solo nei primi 7 giorni del mese
+  const now = new Date();
+  if (now.getDate() > 7) return;
+
+  // il report pronto è quello del mese SCORSO
+  const meseScorso =
+    typeof _shiftYm === "function"
+      ? _shiftYm(now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0"), -1)
+      : null;
+  if (!meseScorso) return;
+
+  // già aperto/dismesso questo mese?
+  try {
+    if (localStorage.getItem("lift_report_seen") === meseScorso) return;
+  } catch (e) {}
+
+  const notice = { mese: meseScorso };
+  const label = _monthLabelIt(notice.mese);
+  el.hidden = false;
+  el.innerHTML = `
+    <div class="resume-banner-txt">
+      <strong>📊 Report di ${escapeHtml(label)} pronto</strong>
+      <span>Guarda com'è andato il mese</span>
+    </div>
+    <button class="resume-banner-btn" id="report-banner-go">Apri</button>
+  `;
+  const btn = document.getElementById("report-banner-go");
+  if (btn)
+    btn.onclick = () => {
+      try {
+        localStorage.setItem("lift_report_seen", notice.mese);
+      } catch (e) {}
+      el.hidden = true;
+      openStats(); // apre le statistiche; la tab Report è il default sul mese scorso
+    };
+}
+
+/** "2026-08" → "agosto" (minuscolo, per il banner). */
+function _monthLabelIt(ym) {
+  const m = String(ym).match(/^(\d{4})-(\d{2})$/);
+  if (!m) return ym;
+  const d = new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, 1);
+  return d.toLocaleDateString("it-IT", { month: "long" });
 }
 
 // startSession() / startProgramWorkout() vivono in exec.js

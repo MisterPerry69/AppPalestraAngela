@@ -6,8 +6,7 @@
   padding: 0;
   display: none;
   flex-direction: column;
-  min-height: 100vh;   /* fallback browser vecchi */
-  min-height: 100dvh;  /* iOS: altezza reale del viewport, niente taglio/scroll spurio */
+  min-height: 100vh;
   animation: none; /* no screen-in for exec, loads fast */
 }
 #screen-exec.active {
@@ -19,18 +18,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* status-bar-style:black → la fascia sistema è già separata: padding fisso
-     in alto (niente safe-area-top, che darebbe doppio spazio). Lati per notch. */
-  padding:
-    var(--sp-4)
-    calc(var(--sp-4) + env(safe-area-inset-right))
-    var(--sp-4)
-    calc(var(--sp-4) + env(safe-area-inset-left));
+  padding: var(--sp-4) var(--sp-4);
   border-bottom: 1px solid var(--border-soft);
   background: var(--surface);
-  position: sticky;
-  top: 0;
-  z-index: 10;
 }
 
 .exec-header .eh-name {
@@ -93,11 +83,7 @@
   align-items: center;
   justify-content: space-between;
   gap: var(--sp-4);
-  padding:
-    var(--sp-5)
-    calc(var(--sp-4) + env(safe-area-inset-right))
-    calc(var(--sp-6) + env(safe-area-inset-bottom))
-    calc(var(--sp-4) + env(safe-area-inset-left));
+  padding: var(--sp-5) var(--sp-4) var(--sp-6);
   text-align: center;
   min-height: 0;
 }
@@ -299,7 +285,6 @@
 .ov-list {
   overflow-y: auto;
   padding: var(--sp-2);
-  padding-bottom: calc(var(--sp-2) + env(safe-area-inset-bottom));
 }
 .ov-item {
   width: 100%;
@@ -613,7 +598,7 @@
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius) var(--radius) 0 0;
-  padding: var(--sp-5) var(--sp-5) calc(var(--sp-7) + env(safe-area-inset-bottom));
+  padding: var(--sp-5) var(--sp-5) var(--sp-7);
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
@@ -698,6 +683,11 @@
   color: var(--accent);
   transform: scale(0.95);
 }
+/* Chip in modalità sottrazione (long-press sul −): segnalati in rosso. */
+.num-chip-neg {
+  border-color: var(--danger);
+  color: var(--danger);
+}
 
 .num-confirm {
   width: 100%;
@@ -719,7 +709,7 @@
 /* Undo toast */
 .toast {
   position: fixed;
-  bottom: calc(var(--sp-6) + env(safe-area-inset-bottom));
+  bottom: var(--sp-6);
   left: 50%;
   transform: translateX(-50%);
   background: var(--surface-3);
@@ -746,6 +736,10 @@
   color: var(--accent);
   font-weight: 800;
   letter-spacing: 0.02em;
+}
+/* "Modifica" nel toast: più tenue di "Annulla" (azione secondaria). */
+#undo-edit-btn {
+  color: var(--text-dim);
 }
 
 /* ============================================
@@ -949,12 +943,56 @@
   margin-top: 3px;
 }
 .ov-item-done {
-  font-size: var(--fs-small);
+  margin-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+/* Chip di una serie registrata: toccabile per correggere peso×reps. */
+.ov-doneset {
+  font-size: var(--fs-micro);
+  font-family: var(--font-mono);
+  font-weight: 700;
   color: #3fae5a;
-  margin-top: 3px;
-  font-weight: 600;
+  background: rgba(63, 174, 90, 0.12);
+  border: 1px solid rgba(63, 174, 90, 0.35);
+  border-radius: var(--radius-pill);
+  padding: 3px 9px;
+}
+.ov-doneset:active {
+  background: rgba(63, 174, 90, 0.24);
+  transform: scale(0.95);
 }
 .ov-item-dots { margin-top: var(--sp-2); }
+
+/* Editor correzione serie: bottom sheet come le altre, ma sopra la panoramica
+   (z 220) così NON si apre sotto la lista da cui lo apri. */
+#editset-modal {
+  z-index: 240;
+}
+/* Tab Peso | Reps dentro l'editor di correzione. */
+.es-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  background: var(--surface-2);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  margin: var(--sp-3) 0 var(--sp-4);
+}
+.es-tab {
+  padding: 9px var(--sp-3);
+  font-size: var(--fs-small);
+  font-weight: 700;
+  color: var(--text-dim-2);
+  border-radius: var(--radius-pill);
+  text-align: center;
+  letter-spacing: 0.04em;
+}
+.es-tab.active {
+  background: var(--accent);
+  color: var(--on-accent);
+}
 
 /* Vista blocco completato */
 .done-badge {

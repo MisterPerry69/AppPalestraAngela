@@ -215,11 +215,13 @@ function _disarmBackGuard() {
 }
 
 function _onExecPopState() {
-  // Finché la sessione è attiva, ogni "indietro" viene annullato ripristinando
-  // subito un paio di cuscinetti (2 per coprire il caso del doppio-pop).
+  // Finché la sessione è attiva, ogni "indietro" viene annullato ri-inserendo
+  // UN solo cuscinetto: un back consuma 1 entry, noi ne rimettiamo 1 → la
+  // history resta STABILE (non cresce). I 3 cuscinetti iniziali coprono il caso
+  // del doppio-pop. Re-pushare 2 farebbe crescere la history senza limite (una
+  // possibile causa dei kill in background per memoria).
   if (ex) {
     try {
-      history.pushState({ liftExec: true }, "");
       history.pushState({ liftExec: true }, "");
     } catch (e) {}
   }
@@ -267,11 +269,12 @@ function setsForBlock(b) {
       type: s.setType || "work",
     }));
   }
-  const extra = b._extraSets || [];
+  const extra = b._extraSets || []; // warm-up aggiunte al volo (in testa)
+  const append = b._appendSets || []; // serie di lavoro aggiunte al volo (in coda)
   // Il totale serie NON si accorcia più: "salta serie" registra un done
   // di tipo "skipped" per quella serie (barrata nello storico), ma la serie
   // resta nel conteggio. Il completamento del blocco è deciso da isBlockComplete.
-  return extra.concat(base);
+  return extra.concat(base, append);
 }
 
 function totalSetsOfBlock(b) {
@@ -550,7 +553,9 @@ function renderExec() {
       </div>
 
       <div class="exec-secondary">
-        <button class="exec-add-warmup" id="ex-add-warmup">+ avvicinamento</button>
+        <button class="exec-add-warmup" id="ex-add-set">${
+          _blockHasDoneSet(ex.bi) ? "+ serie" : "+ avvicinamento"
+        }</button>
         <button class="exec-note-btn ${notaPers ? "has-note" : ""}" id="ex-note">${iconSvg("edit")} Nota</button>
         <button class="exec-skip" id="ex-skip">Salta serie</button>
       </div>
@@ -563,7 +568,9 @@ function renderExec() {
   document.getElementById("ex-end").onclick = confirmEnd;
   document.getElementById("ex-discard").onclick = confirmDiscard;
   document.getElementById("ex-overview").onclick = openOverview;
-  document.getElementById("ex-add-warmup").onclick = addWarmupSet;
+  document.getElementById("ex-add-set").onclick = _blockHasDoneSet(ex.bi)
+    ? addWorkSet
+    : addWarmupSet;
   document.getElementById("ex-note").onclick = () => openNoteEditor(ex.bi);
   document.getElementById("ex-weight").onclick = () =>
     openNum("weight", parseFloat(document.getElementById("exw").textContent) || 0);
@@ -668,6 +675,22 @@ function addWarmupSet() {
   b._extraSets.push({ reps: "", type: "warmup" });
   // la nuova warm-up si inserisce nella posizione corrente; resto sulla stessa
   // posizione così l'utente compila prima l'avvicinamento appena creato.
+  persist();
+  renderExec();
+}
+
+/** true se il blocco ha già almeno una serie NON-skipped registrata. Dopo la
+ *  prima serie il bottone "+ avvicinamento" diventa "+ serie". */
+function _blockHasDoneSet(bi) {
+  return ex.done.some((d) => d.bi === bi && d.type !== "skipped");
+}
+
+/** Aggiunge una serie di LAVORO in coda al blocco corrente (bottone "+ serie",
+ *  disponibile dopo la prima serie). */
+function addWorkSet() {
+  const b = curBlock();
+  if (!b._appendSets) b._appendSets = [];
+  b._appendSets.push({ reps: "", type: "work" });
   persist();
   renderExec();
 }
@@ -1014,6 +1037,22 @@ function doneSummaryForBlock(bi) {
     .join(" · ");
 }
 
+/** Chip CLICCABILI delle serie registrate di un blocco (per correggerle dalla
+ *  panoramica). Ogni chip porta l'indice GLOBALE in ex.done così si può editare. */
+function doneChipsForBlock(bi) {
+  const chips = [];
+  ex.done.forEach((d, idx) => {
+    if (d.bi !== bi || d.type === "skipped") return;
+    if (d.type === "duration") return; // le durate non si editano qui
+    const w = d.weight != null ? d.weight : "?";
+    const r = d.reps != null ? d.reps : "?";
+    chips.push(
+      `<button class="ov-doneset" data-doneidx="${idx}">${_fmtNum(w)}×${r}</button>`
+    );
+  });
+  return chips.join("");
+}
+
 function openOverview() {
   let o = document.getElementById("ov-modal");
   if (!o) {
@@ -1060,16 +1099,17 @@ function openOverview() {
         : "";
       const target = targetSummaryForBlock(b);
       const doneSum = doneSummaryForBlock(bi);
+      const doneChips = doneChipsForBlock(bi);
       return `
-        <button class="ov-item ${isCur ? "ov-item-cur" : ""}" data-bi="${bi}">
+        <div class="ov-item ${isCur ? "ov-item-cur" : ""}" data-bi="${bi}">
           <div class="ov-item-main">
-            <div class="ov-item-name">${escapeHtml(b.exerciseName)} ${ss}${resumedTag}</div>
+            <div class="ov-item-name ov-item-jump" data-bi="${bi}">${escapeHtml(b.exerciseName)} ${ss}${resumedTag}</div>
             ${target ? `<div class="ov-item-target">${escapeHtml(target)}</div>` : ""}
-            ${doneSum ? `<div class="ov-item-done">✓ ${escapeHtml(doneSum)}</div>` : ""}
-            <div class="ov-item-dots">${dots}</div>
+            ${doneChips ? `<div class="ov-item-done">${doneChips}</div>` : ""}
+            <div class="ov-item-dots ov-item-jump" data-bi="${bi}">${dots}</div>
           </div>
-          <div class="ov-item-meta">${resumed ? "✓" : skipped ? "❎" : done + "/" + sets.length}</div>
-        </button>`;
+          <div class="ov-item-meta ov-item-jump" data-bi="${bi}">${resumed ? "✓" : skipped ? "❎" : done + "/" + sets.length}</div>
+        </div>`;
     })
     .join("");
 
@@ -1084,11 +1124,20 @@ function openOverview() {
     </div>`;
 
   o.querySelector("#ov-close").onclick = () => o.classList.remove("open");
-  o.querySelectorAll(".ov-item").forEach((it) => {
+  // Tocco su nome/pallini/contatore → salta a quel blocco.
+  o.querySelectorAll(".ov-item-jump").forEach((it) => {
     it.onclick = () => {
       const bi = parseInt(it.dataset.bi, 10);
       jumpToBlock(bi);
       o.classList.remove("open");
+    };
+  });
+  // Tocco su una serie già registrata → correggi peso/reps.
+  o.querySelectorAll(".ov-doneset").forEach((chip) => {
+    chip.onclick = (e) => {
+      e.stopPropagation();
+      const idx = parseInt(chip.dataset.doneidx, 10);
+      openEditDoneSet(idx, () => openOverview()); // ridisegna la panoramica dopo
     };
   });
   o.querySelector("#ov-add").onclick = () => {
@@ -1096,6 +1145,70 @@ function openOverview() {
     openAddExercise();
   };
   o.classList.add("open");
+}
+
+/**
+ * Editor per correggere peso/reps di una serie GIÀ registrata (ex.done[idx]).
+ * Due tab PESO | REPS, ciascuno col pannello numerico completo (chip + −/+).
+ * onDone: callback dopo il salvataggio (es. ridisegnare la panoramica).
+ */
+function openEditDoneSet(idx, onDone) {
+  const d = ex.done[idx];
+  if (!d) return;
+  let m = document.getElementById("editset-modal");
+  if (!m) {
+    m = document.createElement("div");
+    m.id = "editset-modal";
+    m.className = "num-modal";
+    document.body.appendChild(m);
+    m.addEventListener("click", (e) => {
+      if (e.target === m) m.classList.remove("open");
+    });
+  }
+  const w0 = d.weight != null ? d.weight : 0;
+  const r0 = d.reps != null ? d.reps : 0;
+
+  m.innerHTML = `
+    <div class="num-sheet">
+      <div class="num-sheet-label">Correggi · ${escapeHtml(d.exerciseName || "")}</div>
+      <div class="es-tabs">
+        <button type="button" class="es-tab active" data-tab="weight">Peso</button>
+        <button type="button" class="es-tab" data-tab="reps">Reps</button>
+      </div>
+      <div class="np-host" id="es-host"></div>
+      <button class="num-confirm" id="es-ok">Salva correzione</button>
+    </div>`;
+
+  const host = m.querySelector("#es-host");
+  // valori correnti mantenuti tra i due tab
+  const cur = { weight: round(w0, "weight"), reps: round(r0, "reps") };
+  let panel = null;
+  let activeTab = "weight";
+
+  const mount = (tab) => {
+    // prima di cambiare tab, salvo il valore del pannello attuale
+    if (panel) cur[activeTab] = panel.getValue();
+    activeTab = tab;
+    m.querySelectorAll(".es-tab").forEach((t) =>
+      t.classList.toggle("active", t.dataset.tab === tab)
+    );
+    panel = _renderNumPanel(host, tab, cur[tab]);
+  };
+  mount("weight");
+
+  m.querySelectorAll(".es-tab").forEach((t) => {
+    t.onclick = () => mount(t.dataset.tab);
+  });
+
+  m.querySelector("#es-ok").onclick = () => {
+    if (panel) cur[activeTab] = panel.getValue(); // salvo il tab visibile
+    ex.done[idx].weight = round(cur.weight, "weight");
+    ex.done[idx].reps = Math.max(0, parseInt(cur.reps, 10) || 0);
+    persist();
+    m.classList.remove("open");
+    if (onDone) onDone();
+  };
+  m.classList.add("open");
 }
 
 /**
@@ -1272,64 +1385,124 @@ function startSessionTimer() {
   sessTick = setInterval(tick, 1000);
 }
 
-/* ---------- modale numerica ---------- */
+/* ---------- pannello numerico riusabile (display + chip + long-press) ---------- */
 
-let numCtx = null;
+/**
+ * Monta dentro `host` un pannello numerico (display −/+ , chip rapidi) per
+ * kind "weight" o "reps". Ritorna { getValue } per leggere il valore corrente.
+ * Riusato da openNum (campo singolo) e da openEditDoneSet (tab peso/reps).
+ */
+function _renderNumPanel(host, kind, current) {
+  const chips =
+    kind === "weight" ? [1.25, 2.5, 5, 10, 15, 20] : [6, 8, 10, 12, 15];
+  const isPreset = kind !== "weight"; // reps = preset; peso = incremento
+
+  host.innerHTML = `
+    <div class="num-display">
+      <button class="num-step np-minus" type="button">−</button>
+      <input class="np-input" readonly inputmode="${kind === "weight" ? "decimal" : "numeric"}" />
+      <button class="num-step np-plus" type="button">+</button>
+    </div>
+    <div class="num-chips np-chips"></div>`;
+
+  const input = host.querySelector(".np-input");
+  input.value = current != null && current !== "" ? _fmtNum(current) : "";
+  const chipsWrap = host.querySelector(".np-chips");
+  const state = { subtract: false, suppressClick: false };
+
+  const renderChips = () => {
+    chipsWrap.innerHTML = chips
+      .map((c) => {
+        const sign = isPreset ? "" : state.subtract ? "−" : "+";
+        return `<button type="button" class="num-chip${
+          !isPreset && state.subtract ? " num-chip-neg" : ""
+        }" data-c="${c}">${sign}${_fmtNum(c)}</button>`;
+      })
+      .join("");
+    chipsWrap.querySelectorAll(".num-chip").forEach((ch) => {
+      ch.onclick = () => {
+        const c = parseFloat(ch.dataset.c);
+        if (isPreset) input.value = _fmtNum(round(c, kind));
+        else {
+          const delta = state.subtract ? -c : c;
+          input.value = _fmtNum(round(num(input.value) + delta, kind));
+        }
+      };
+    });
+  };
+  renderChips();
+
+  const minusBtn = host.querySelector(".np-minus");
+  minusBtn.onclick = () =>
+    (input.value = _fmtNum(round(num(input.value) - 1, kind)));
+  host.querySelector(".np-plus").onclick = () =>
+    (input.value = _fmtNum(round(num(input.value) + 1, kind)));
+
+  // long-press sul − → chip negativi (solo peso)
+  if (kind === "weight") {
+    let lpTimer = null;
+    const startLP = () => {
+      lpTimer = setTimeout(() => {
+        lpTimer = null;
+        state.subtract = !state.subtract;
+        renderChips();
+        try {
+          if (navigator.vibrate) navigator.vibrate(30);
+        } catch (e) {}
+      }, 450);
+    };
+    const cancelLP = () => {
+      if (lpTimer) {
+        clearTimeout(lpTimer);
+        lpTimer = null;
+      }
+    };
+    minusBtn.addEventListener(
+      "click",
+      (e) => {
+        if (state.suppressClick) {
+          state.suppressClick = false;
+          e.stopImmediatePropagation();
+          e.preventDefault();
+        }
+      },
+      true
+    );
+    minusBtn.addEventListener("touchstart", startLP, { passive: true });
+    minusBtn.addEventListener("mousedown", startLP);
+    ["touchend", "touchcancel", "mouseup", "mouseleave"].forEach((ev) =>
+      minusBtn.addEventListener(ev, () => {
+        if (!lpTimer) state.suppressClick = true;
+        cancelLP();
+      })
+    );
+  }
+
+  return { getValue: () => round(num(input.value), kind) };
+}
+
+/* ---------- modale numerica (campo singolo) ---------- */
+
 function openNum(kind, current) {
-  numCtx = { kind: kind, value: current };
   let m = document.getElementById("num-modal");
   if (!m) {
     m = document.createElement("div");
     m.id = "num-modal";
     m.className = "num-modal";
-    m.innerHTML = `
-      <div class="num-sheet">
-        <div class="num-sheet-label" id="num-label">Peso (kg)</div>
-        <div class="num-display">
-          <button class="num-step" id="num-minus">−</button>
-          <input id="num-input" readonly inputmode="decimal" />
-          <button class="num-step" id="num-plus">+</button>
-        </div>
-        <div class="num-chips" id="num-chips"></div>
-        <button class="num-confirm" id="num-ok">Conferma</button>
-      </div>`;
     document.body.appendChild(m);
     m.addEventListener("click", (e) => {
       if (e.target === m) m.classList.remove("open");
     });
   }
-  const label = m.querySelector("#num-label");
-  if (label) label.textContent = kind === "weight" ? "Peso (kg)" : "Ripetizioni";
-  const input = m.querySelector("#num-input");
-  input.value = current || "";
-  // PESO: chip che AGGIUNGONO (+incremento). REPS: chip PRESET che impostano il valore.
-  const chips =
-    kind === "weight"
-      ? [1.25, 2.5, 5, 10, 15, 20]
-      : [6, 8, 10, 12, 15, 20];
-  const isPresetChips = kind !== "weight"; // reps = preset diretti
-  m.querySelector("#num-chips").innerHTML = chips
-    .map(
-      (c) =>
-        `<button class="num-chip" data-c="${c}">${
-          isPresetChips ? _fmtNum(c) : "+" + _fmtNum(c)
-        }</button>`
-    )
-    .join("");
-  const step = kind === "weight" ? 1 : 1;
-  m.querySelector("#num-minus").onclick = () =>
-    (input.value = round(num(input.value) - step, kind));
-  m.querySelector("#num-plus").onclick = () =>
-    (input.value = round(num(input.value) + step, kind));
-  m.querySelectorAll(".num-chip").forEach((ch) => {
-    ch.onclick = () => {
-      const c = parseFloat(ch.dataset.c);
-      // reps: il chip IMPOSTA il valore; peso: lo somma
-      input.value = isPresetChips ? round(c, kind) : round(num(input.value) + c, kind);
-    };
-  });
+  m.innerHTML = `
+    <div class="num-sheet">
+      <div class="num-sheet-label">${kind === "weight" ? "Peso (kg)" : "Ripetizioni"}</div>
+      <div class="np-host"></div>
+      <button class="num-confirm" id="num-ok">Conferma</button>
+    </div>`;
+  const panel = _renderNumPanel(m.querySelector(".np-host"), kind, current);
   m.querySelector("#num-ok").onclick = () => {
-    const v = round(num(input.value), kind);
+    const v = panel.getValue();
     if (kind === "weight") document.getElementById("exw").textContent = v;
     else document.getElementById("exr").textContent = v;
     m.classList.remove("open");
@@ -1560,9 +1733,17 @@ function showUndo() {
     t = document.createElement("div");
     t.id = "undo-toast";
     t.className = "toast";
-    t.innerHTML = `<span>Serie salvata</span><button id="undo-btn">ANNULLA</button>`;
     document.body.appendChild(t);
   }
+  // ricreo i bottoni ogni volta (ANNULLA + MODIFICA sull'ultima serie salvata)
+  t.innerHTML = `<span>Serie salvata</span>
+    <button id="undo-edit-btn">MODIFICA</button>
+    <button id="undo-btn">ANNULLA</button>`;
+  t.querySelector("#undo-edit-btn").onclick = () => {
+    const idx = ex.done.length - 1; // ultima serie registrata
+    if (idx >= 0) openEditDoneSet(idx, () => renderExec());
+    t.classList.remove("show");
+  };
   t.querySelector("#undo-btn").onclick = () => {
     // rimuovo l'ultimo done e torno ESATTAMENTE su quel blocco/serie (superset-safe).
     const removed = ex.done.pop();

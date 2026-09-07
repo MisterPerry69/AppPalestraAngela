@@ -388,23 +388,59 @@ function _ymLabel(ym) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+/** "YYYY-MM" del MESE SCORSO (l'ultimo concluso): è il report più recente. */
+function _lastYm() {
+  return _shiftYm(_thisYm(), -1);
+}
+
+/* Cache LOCALE dei report: un mese concluso è immutabile → una volta scaricato
+   lo teniamo in localStorage e lo mostriamo ISTANTANEO (niente rete, niente
+   spinner) anche riaprendo l'app. */
+const _REPORT_CACHE_KEY = "lift_report_cache";
+
+function _readReportCache(mese) {
+  try {
+    const all = JSON.parse(localStorage.getItem(_REPORT_CACHE_KEY) || "{}");
+    return all[mese] || null;
+  } catch (e) {
+    return null;
+  }
+}
+function _writeReportCache(mese, data) {
+  try {
+    const all = JSON.parse(localStorage.getItem(_REPORT_CACHE_KEY) || "{}");
+    all[mese] = data;
+    localStorage.setItem(_REPORT_CACHE_KEY, JSON.stringify(all));
+  } catch (e) {}
+}
+
 async function _drawReport(mese) {
   await _loadChartJs();
-  _reportMese = mese || _reportMese || _thisYm();
+  // Il report riguarda solo mesi CONCLUSI: il più recente è il mese scorso.
+  _reportMese = mese || _reportMese || _lastYm();
   const v = document.getElementById("view-report");
-  let data;
-  try {
-    data = await apiPost("lift_get_month_report", { mese: _reportMese });
-  } catch (e) {
-    v.innerHTML = `<div class="empty-state">Errore: ${escapeHtml(e.message || e)}</div>`;
-    return;
-  }
-  if (!data || data.status !== "OK") {
-    v.innerHTML = `<div class="empty-state">Nessun dato report.</div>`;
-    return;
+
+  // 1. cache locale: se ho già questo mese, lo mostro ISTANTANEO (no rete/spinner)
+  let data = _readReportCache(_reportMese);
+
+  // 2. altrimenti lo chiedo al backend
+  if (!data) {
+    try {
+      data = await apiPost("lift_get_month_report", { mese: _reportMese });
+    } catch (e) {
+      v.innerHTML = `<div class="empty-state">Errore: ${escapeHtml(e.message || e)}</div>`;
+      return;
+    }
+    if (!data || data.status !== "OK") {
+      v.innerHTML = `<div class="empty-state">Nessun dato report.</div>`;
+      return;
+    }
+    // salvo in cache solo i mesi conclusi (immutabili): mese < mese corrente
+    if (_reportMese < _thisYm()) _writeReportCache(_reportMese, data);
   }
 
-  const isCurrent = _reportMese >= _thisYm();
+  // "avanti" disabilitato una volta arrivati al mese scorso (niente mese corrente)
+  const isCurrent = _reportMese >= _lastYm();
   v.innerHTML = `
     <div class="rep-nav">
       <button class="rep-nav-btn" id="rep-prev" aria-label="Mese precedente">‹</button>
@@ -423,7 +459,7 @@ async function _drawReport(mese) {
       ${_repCard("Serie", data.tot.serie, data.prec.serie, data.hasPrev, "")}
     </div>
 
-    <div class="section-label label-micro rep-sec-label">Distribuzione muscoli</div>
+    <div class="section-label label-micro rep-sec-label">Serie per muscolo</div>
     <div class="rep-radar-wrap"><canvas id="report-radar"></canvas></div>
 
     <div class="section-label label-micro rep-sec-label">Giorni allenati</div>
@@ -436,7 +472,7 @@ async function _drawReport(mese) {
   if (nextBtn && !isCurrent)
     nextBtn.onclick = () => _drawReport(_shiftYm(_reportMese, 1));
 
-  _drawReportRadar(data.radar);
+  _drawReportRadar(data.radar, _ymLabel(_reportMese), _ymLabel(data.mesePrec || _shiftYm(_reportMese, -1)));
 }
 
 /** Card con valore + delta vs mese precedente. */
@@ -463,8 +499,8 @@ function _repCard(label, cur, prev, hasPrev, unit) {
   </div>`;
 }
 
-/** Radar 6 macro: mese corrente vs precedente. */
-function _drawReportRadar(radar) {
+/** Radar 6 macro (serie per muscolo): mese del report vs mese prima. */
+function _drawReportRadar(radar, labelCur, labelPrev) {
   const ctx = document.getElementById("report-radar");
   if (!ctx || !radar) return;
   if (_reportChart) _reportChart.destroy();
@@ -476,14 +512,14 @@ function _drawReportRadar(radar) {
       labels: radar.labels,
       datasets: [
         {
-          label: "Mese prec.",
+          label: labelPrev || "Mese prima",
           data: radar.prev,
           borderColor: "rgba(154,163,173,0.6)",
           backgroundColor: "rgba(154,163,173,0.12)",
           pointRadius: 2,
         },
         {
-          label: "Questo mese",
+          label: labelCur || "Report",
           data: radar.cur,
           borderColor: accent,
           backgroundColor: "rgba(74,222,128,0.18)",
