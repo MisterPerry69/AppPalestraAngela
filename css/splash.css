@@ -6,7 +6,7 @@
 #splash {
   position: fixed;
   inset: 0;
-  background: var(--bg);
+  background: #ce3689;
   z-index: 999;
   display: flex;
   align-items: center;
@@ -29,7 +29,7 @@
 }
 
 .splash-logo {
-  width: 140px;
+  width: 200px;
   max-width: 55vw;
   height: auto;          /* l'altezza segue il ratio naturale: niente deformazione */
   object-fit: contain;
@@ -39,7 +39,7 @@
 .splash-name {
   font-family: var(--font-display);
   font-size: 3.4rem;
-  font-weight: 700;
+  font-weight: 100;
   letter-spacing: 0.02em;
   line-height: 1;
   color: var(--text);
@@ -57,7 +57,7 @@
 .splash-bar-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+  background: var(--accent);
   border-radius: var(--radius-pill);
   transition: width 80ms linear;
 }
