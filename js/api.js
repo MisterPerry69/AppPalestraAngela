@@ -105,21 +105,24 @@ async function _fetchTimeout(url, ms) {
 }
 
 /**
- * GET verso GAS con RETRY automatico. GAS su rete instabile (o durante un
- * redirect intermedio / throttling) risponde a volte con HTML invece di JSON,
- * o la fetch fallisce del tutto: un singolo colpo diventava "Connessione
- * fallita" fatale. Le GET sono idempotenti → sicuro riprovare con backoff.
- * Ogni tentativo ha un TIMEOUT (12s) così un backend appeso non blocca minuti.
+ * GET verso GAS con RETRY automatico. GAS su rete instabile risponde a volte con
+ * HTML invece di JSON, o la fetch fallisce/si appende. Le GET sono idempotenti →
+ * sicuro riprovare.
+ * TIMEOUT ALTO (30s): il bootstrap di Angela legge molte tab del foglio ed è
+ * LENTO ma funzionante (a freddo può superare i 10-15s). Un timeout basso (era
+ * 12s) lo abortiva → "signal is aborted without reason". 30s è solo il tetto
+ * anti-appeso-infinito (il problema originale erano i MINUTI), non taglia le
+ * risposte lente-ma-valide.
  */
 async function _getJsonWithRetry(url, tries = 3) {
   let lastErr;
   for (let i = 0; i < tries; i++) {
     try {
-      const res = await _fetchTimeout(url, 12000);
+      const res = await _fetchTimeout(url, 30000);
       return await _parse(res); // lancia su HTML/non-JSON
     } catch (e) {
       lastErr = e;
-      if (i < tries - 1) await _sleep(600 * (i + 1)); // 600ms, 1200ms
+      if (i < tries - 1) await _sleep(800 * (i + 1)); // 800ms, 1600ms
     }
   }
   throw lastErr;
@@ -159,11 +162,23 @@ async function apiPost(action, payload = {}) {
     if (_INVALIDATES_BOOTSTRAP[action]) {
       apiInvalidate("lift_get_data");
     }
+    // Le action che toccano le SESSIONI invalidano anche storico + dettagli
+    // (altrimenti dopo un salvataggio/modifica lo storico resta quello vecchio).
+    if (_INVALIDATES_HISTORY[action]) {
+      apiInvalidate("lift_get_history");
+      apiInvalidate("lift_get_session");
+    }
     return data;
   } finally {
     _hideLoading();
   }
 }
+
+// Quali action invalidano la cache di storico + dettaglio sessione
+const _INVALIDATES_HISTORY = {
+  lift_save_session: true,
+  lift_edit_session: true,
+};
 
 // Quali action invalidano la cache di lift_get_data
 const _INVALIDATES_BOOTSTRAP = {
