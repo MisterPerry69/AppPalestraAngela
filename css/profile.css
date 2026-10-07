@@ -97,6 +97,11 @@
   border-color: var(--border);
 }
 
+/* Voce Ceck: solo il bordo verde, resto del bottone invariato. */
+.prof-item-green {
+  border-color: #3fae5a;
+}
+
 .prof-item .pi-icon {
   width: 40px;
   height: 40px;

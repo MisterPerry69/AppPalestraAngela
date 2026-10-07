@@ -55,6 +55,7 @@ const LOADING_MSG = {
   lift_get_template: "Preparo la scheda…",
   lift_get_session: "Carico la sessione…",
   lift_get_history: "Carico lo storico…",
+  lift_get_ceck: "Preparo il Ceck…",
   lift_save_template: "Salvo la scheda…",
   lift_save_session: "Salvo la sessione…",
   lift_log_weight: "Salvo il peso…",
@@ -167,7 +168,10 @@ async function apiPost(action, payload = {}) {
     if (_INVALIDATES_HISTORY[action]) {
       apiInvalidate("lift_get_history");
       apiInvalidate("lift_get_session");
+      apiInvalidate("lift_get_ceck");
     }
+    // il peso corporeo entra nella media settimanale del Ceck
+    if (action === "lift_log_weight") apiInvalidate("lift_get_ceck");
     return data;
   } finally {
     _hideLoading();

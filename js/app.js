@@ -134,7 +134,9 @@ function liftAlert(message, title) {
 }
 
 function showScreen(id) {
-  Object.values(screens).forEach((el) => el.classList.remove("active"));
+  // robusto ai null: una schermata non ancora caricata (es. index.html vecchio
+  // in cache) non deve bloccare l'intera app.
+  Object.values(screens).forEach((el) => el && el.classList.remove("active"));
   if (screens[id]) screens[id].classList.add("active");
 }
 
@@ -185,6 +187,7 @@ async function boot() {
   screens["exercise-detail"] = document.getElementById("screen-exercise-detail");
   screens.schede = document.getElementById("screen-schede");
   screens["scheda-detail"] = document.getElementById("screen-scheda-detail");
+  screens.ceck = document.getElementById("screen-ceck");
 
   // se c'e una sessione attiva non terminata, riprendila
   if (typeof resumeSessionIfAny === "function" && resumeSessionIfAny()) {
